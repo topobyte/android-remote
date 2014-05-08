@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ "$#" -lt "0" ]; then
+	echo "usage: viewer"
+	exit 1
+fi
+
+# find java claspath
+DIR=`dirname $0`
+#echo "we are operating from: $DIR"
+CLASSPATH=.
+CLASSPATH+=:$DIR/../lib/*
+CLASSPATH+=:$DIR/../bin/
+CLASSPATH+=:$DIR/../
+#echo "CLASSPATH=$CLASSPATH"
+
+CMD="java -cp $CLASSPATH de.topobyte.androidremote.Viewer"
+exec $CMD "$@"
