@@ -86,10 +86,13 @@ public class Viewer
 				@Override
 				public void run()
 				{
-					update(image);
+					if (image != null) {
+						update(image);
+					} else {
+						System.err.println("Invalid image");
+					}
 				}
 			});
-			update(image);
 		} catch (IOException e) {
 			System.err.println("Error while decoding screenshot: "
 					+ e.getMessage());
