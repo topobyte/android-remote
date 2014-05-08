@@ -27,6 +27,8 @@ public class Util
 	private static String CMD_SCREENCAP = "adb shell screencap -p";
 	private static String CMD_TAP = "adb shell input tap %d %d";
 	private static String CMD_SWIPE = "adb shell input swipe %d %d %d %d %d";
+	private static String CMD_TEXT = "adb shell input text %s";
+	private static String CMD_KEYEVENT = "adb shell input keyevent %d";
 
 	public static boolean haveAdbInPath()
 	{
@@ -90,6 +92,20 @@ public class Util
 			throws IOException
 	{
 		String cmd = String.format(CMD_SWIPE, x, y, x2, y2, duration);
+		System.out.println(cmd);
+		Runtime.getRuntime().exec(cmd);
+	}
+
+	public static void sendText(String text) throws IOException
+	{
+		String cmd = String.format(CMD_TEXT, text);
+		System.out.println(cmd);
+		Runtime.getRuntime().exec(cmd);
+	}
+
+	public static void sendKeyEvent(int key) throws IOException
+	{
+		String cmd = String.format(CMD_KEYEVENT, key);
 		System.out.println(cmd);
 		Runtime.getRuntime().exec(cmd);
 	}

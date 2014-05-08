@@ -72,6 +72,8 @@ public class Viewer
 		};
 		Thread thread = new Thread(screenshotFetcher);
 		thread.start();
+
+		frame.addKeyListener(new DeviceKeyAdapter());
 	}
 
 	protected void update(byte[] bytes)
