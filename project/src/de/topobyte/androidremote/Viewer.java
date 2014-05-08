@@ -39,16 +39,23 @@ public class Viewer
 		}
 		System.out.println("Okay, let's begin");
 
-		new Viewer();
+		double scale = 0.3;
+		if (args.length > 0) {
+			String argScale = args[0];
+			double value = Double.parseDouble(argScale);
+			if (value != 0) {
+				scale = value;
+			}
+		}
+
+		new Viewer(scale);
 	}
 
 	private JFrame frame;
 	private ScreenshotPanel screenshotPanel;
 
-	public Viewer()
+	public Viewer(double scale)
 	{
-		double scale = 0.3;
-
 		frame = new JFrame("Android Remote Control");
 		frame.setSize(400, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
