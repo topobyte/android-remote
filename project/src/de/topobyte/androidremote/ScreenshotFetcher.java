@@ -30,6 +30,13 @@ public abstract class ScreenshotFetcher implements Runnable
 		while (true) {
 			try {
 				byte[] screenshot = Util.getScreenshot();
+				if (screenshot.length == 0) {
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						// ignore
+					}
+				}
 				screenshotAvailabe(screenshot);
 			} catch (IOException e) {
 				System.err.println("Error while fetching screenshot: "
