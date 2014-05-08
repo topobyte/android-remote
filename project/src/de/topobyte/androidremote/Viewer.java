@@ -17,10 +17,88 @@
 
 package de.topobyte.androidremote;
 
+import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 public class Viewer
 {
+
 	public static void main(String[] args)
 	{
+		if (!Util.haveAdbInPath()) {
+			System.err
+					.println("Unable to execute adb. Have you set up the path correctly?");
+			System.exit(1);
+		}
+		System.out.println("Okay, let's begin");
 
+		new Viewer();
 	}
+
+	private JFrame frame;
+	private ScreenshotPanel screenshotPanel;
+
+	public Viewer()
+	{
+		double scale = 0.3;
+
+		frame = new JFrame();
+		frame.setSize(400, 800);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		JPanel panel = new JPanel(new BorderLayout());
+		frame.setContentPane(panel);
+
+		screenshotPanel = new ScreenshotPanel(scale);
+		panel.add(screenshotPanel, BorderLayout.CENTER);
+
+		frame.pack();
+		frame.setVisible(true);
+
+		ScreenshotFetcher screenshotFetcher = new ScreenshotFetcher() {
+
+			@Override
+			public void screenshotAvailabe(byte[] bytes)
+			{
+				update(bytes);
+			}
+		};
+		Thread thread = new Thread(screenshotFetcher);
+		thread.start();
+	}
+
+	protected void update(byte[] bytes)
+	{
+		try {
+			final BufferedImage image = ImageIO.read(new ByteArrayInputStream(
+					bytes));
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run()
+				{
+					update(image);
+				}
+			});
+			update(image);
+		} catch (IOException e) {
+			System.err.println("Error while decoding screenshot: "
+					+ e.getMessage());
+		}
+	}
+
+	private void update(BufferedImage image)
+	{
+		screenshotPanel.setImage(image);
+		frame.pack();
+		screenshotPanel.repaint();
+	}
+
 }
