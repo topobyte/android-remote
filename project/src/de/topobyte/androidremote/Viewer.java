@@ -18,14 +18,16 @@
 package de.topobyte.androidremote;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import com.android.ddmlib.AndroidDebugBridge;
+import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener;
+import com.android.ddmlib.IDevice;
 
 public class Viewer
 {
@@ -53,9 +55,15 @@ public class Viewer
 
 	private JFrame frame;
 	private ScreenshotPanel screenshotPanel;
+	private AndroidDebugBridge adb;
+	private IDevice device;
 
 	public Viewer(double scale)
 	{
+		AndroidDebugBridge.init(false);
+		adb = AndroidDebugBridge.createBridge();
+		AndroidDebugBridge.addDeviceChangeListener(new DeviceListener());
+
 		frame = new JFrame("Android Remote Control");
 		frame.setSize(400, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,50 +77,74 @@ public class Viewer
 		frame.pack();
 		frame.setVisible(true);
 
-		ScreenshotFetcher screenshotFetcher = new ScreenshotFetcher() {
-
-			@Override
-			public void screenshotAvailabe(byte[] bytes)
-			{
-				update(bytes);
-			}
-		};
-		Thread thread = new Thread(screenshotFetcher);
-		thread.start();
-
 		frame.addKeyListener(new DeviceKeyAdapter());
 	}
 
-	protected void update(byte[] bytes)
+	protected void update(final Image image)
 	{
-		try {
-			final BufferedImage image = ImageIO.read(new ByteArrayInputStream(
-					bytes));
-			SwingUtilities.invokeLater(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 
-				@Override
-				public void run()
-				{
-					if (image != null) {
-						update(image);
-					} else {
-						System.err.println("Invalid image");
-					}
+			@Override
+			public void run()
+			{
+				if (image != null) {
+					updatePanel(image);
+				} else {
+					System.err.println("Invalid image");
 				}
-			});
-		} catch (IOException e) {
-			System.err.println("Error while decoding screenshot: "
-					+ e.getMessage());
-		}
+			}
+		});
 	}
 
-	private void update(BufferedImage image)
+	private void updatePanel(Image image)
 	{
 		boolean sizeChanged = screenshotPanel.setImage(image);
 		if (sizeChanged) {
 			frame.pack();
 		}
 		screenshotPanel.repaint();
+	}
+
+	private class DeviceListener implements IDeviceChangeListener
+	{
+
+		@Override
+		public void deviceConnected(IDevice device)
+		{
+			if (Viewer.this.device == null) {
+				Viewer.this.device = device;
+				startFetcher();
+			}
+		}
+
+		@Override
+		public void deviceDisconnected(IDevice device)
+		{
+			if (Viewer.this.device == device) {
+				Viewer.this.device = null;
+			}
+		}
+
+		@Override
+		public void deviceChanged(IDevice device, int mask)
+		{
+			// ignore
+		}
+	}
+
+	public void startFetcher()
+	{
+
+		ScreenshotFetcher screenshotFetcher = new ScreenshotFetcher(device) {
+
+			@Override
+			public void screenshotAvailabe(BufferedImage image)
+			{
+				update(image);
+			}
+		};
+		Thread thread = new Thread(screenshotFetcher);
+		thread.start();
 	}
 
 }

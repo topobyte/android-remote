@@ -17,10 +17,14 @@
 
 package de.topobyte.androidremote;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.IOException;
-import java.io.InputStream;
+
+import com.android.ddmlib.AdbCommandRejectedException;
+import com.android.ddmlib.IDevice;
+import com.android.ddmlib.RawImage;
+import com.android.ddmlib.TimeoutException;
 
 public class Util
 {
@@ -41,45 +45,40 @@ public class Util
 		return true;
 	}
 
-	private static byte[] readFully(InputStream is) throws IOException
+	public static BufferedImage getScreenshot(IDevice device)
+			throws TimeoutException, AdbCommandRejectedException, IOException
 	{
-		BufferedInputStream bis = new BufferedInputStream(is);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		boolean lastWasR = false;
-		while (true) {
-			int b = bis.read();
-			if (b < 0) {
-				break;
-			}
-			if (lastWasR) {
-				if (b == '\n') {
-					baos.write('\n');
-					lastWasR = false;
-				} else {
-					baos.write('\r');
-					if (b != '\r') {
-						lastWasR = false;
-						baos.write(b);
-					}
-				}
-				continue;
-			}
-			if (b == '\r') {
-				lastWasR = true;
-				continue;
-			}
-			baos.write(b);
-		}
-		return baos.toByteArray();
-	}
+		RawImage rawImage = device.getScreenshot();
+		System.out.println("bpp: "
+				+ rawImage.bpp
+				+ ", size: "
+				+ rawImage.width
+				+ " x "
+				+ rawImage.height
+				+ ", "
+				+ String.format("%X %X %X", rawImage.getRedMask(),
+						rawImage.getGreenMask(), rawImage.getBlueMask()));
 
-	public static byte[] getScreenshot() throws IOException
-	{
-		Process process = Runtime.getRuntime().exec(CMD_SCREENCAP);
-		InputStream is = process.getInputStream();
-		byte[] bytes = readFully(is);
-		is.close();
-		return bytes;
+		BufferedImage image = new BufferedImage(rawImage.width,
+				rawImage.height, BufferedImage.TYPE_INT_ARGB);
+
+		long t1 = System.currentTimeMillis();
+		WritableRaster raster = image.getRaster();
+		for (int j = 0; j < rawImage.height; j++) {
+			int s = j * rawImage.width * 4;
+			for (int i = 0; i < rawImage.width; i++) {
+				int t = s + i * 4;
+				byte r = rawImage.data[t + 0];
+				byte g = rawImage.data[t + 1];
+				byte b = rawImage.data[t + 2];
+				byte a = rawImage.data[t + 3];
+				raster.setPixel(i, j, new int[] { r, g, b, a });
+			}
+		}
+		long t2 = System.currentTimeMillis();
+		System.out.println("time: " + (t2 - t1));
+
+		return image;
 	}
 
 	public static void sendTap(int x, int y) throws IOException

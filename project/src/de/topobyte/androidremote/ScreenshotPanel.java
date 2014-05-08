@@ -32,7 +32,7 @@ public class ScreenshotPanel extends JPanel
 	private static final long serialVersionUID = 1L;
 
 	private double scale;
-	private BufferedImage image;
+	private Image image;
 
 	private DeviceInfo info;
 
@@ -48,15 +48,15 @@ public class ScreenshotPanel extends JPanel
 		addMouseMotionListener(deviceMouseAdapter);
 	}
 
-	public boolean setImage(BufferedImage image)
+	public boolean setImage(Image image)
 	{
 		this.image = image;
-		if (image.getWidth() != info.getWidth()
-				|| image.getHeight() != info.getHeight()) {
-			info.setHeight(image.getHeight());
-			info.setWidth(image.getWidth());
-			int w = (int) Math.round(image.getWidth() * scale);
-			int h = (int) Math.round(image.getHeight() * scale);
+		if (image.getWidth(null) != info.getWidth()
+				|| image.getHeight(null) != info.getHeight()) {
+			info.setHeight(image.getHeight(null));
+			info.setWidth(image.getWidth(null));
+			int w = (int) Math.round(image.getWidth(null) * scale);
+			int h = (int) Math.round(image.getHeight(null) * scale);
 			info.setDisplayWidth(w);
 			info.setDisplayHeight(h);
 			setPreferredSize(new Dimension(w, h));

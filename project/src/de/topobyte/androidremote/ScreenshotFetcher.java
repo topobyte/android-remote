@@ -17,30 +17,50 @@
 
 package de.topobyte.androidremote;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+
+import com.android.ddmlib.AdbCommandRejectedException;
+import com.android.ddmlib.IDevice;
+import com.android.ddmlib.TimeoutException;
 
 public abstract class ScreenshotFetcher implements Runnable
 {
 
-	public abstract void screenshotAvailabe(byte[] bytes);
+	private IDevice device;
+
+	public ScreenshotFetcher(IDevice device)
+	{
+		this.device = device;
+	}
+
+	public abstract void screenshotAvailabe(BufferedImage image);
 
 	@Override
 	public void run()
 	{
 		while (true) {
+			boolean success = false;
 			try {
-				byte[] screenshot = Util.getScreenshot();
-				if (screenshot.length == 0) {
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						// ignore
-					}
-				}
-				screenshotAvailabe(screenshot);
+				BufferedImage image = Util.getScreenshot(device);
+				screenshotAvailabe(image);
+				success = true;
+			} catch (TimeoutException e) {
+				System.err.println("Error while fetching screenshot: "
+						+ e.getMessage());
+			} catch (AdbCommandRejectedException e) {
+				System.err.println("Error while fetching screenshot: "
+						+ e.getMessage());
 			} catch (IOException e) {
 				System.err.println("Error while fetching screenshot: "
 						+ e.getMessage());
+			}
+			if (!success) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// ignore
+				}
 			}
 		}
 	}
