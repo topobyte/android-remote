@@ -33,37 +33,38 @@ public class ScreenshotPanel extends JPanel
 
 	private Image image;
 
-	private DeviceInfo info;
+	private DeviceGeometry geometry;
 
-	public ScreenshotPanel(double scale)
+	public ScreenshotPanel(Viewer viewer, double scale)
 	{
 		setPreferredSize(new Dimension(200, 200));
 
-		info = new DeviceInfo(scale);
+		geometry = new DeviceGeometry(scale);
 
-		DeviceMouseAdapter deviceMouseAdapter = new DeviceMouseAdapter(info);
+		DeviceMouseAdapter deviceMouseAdapter = new DeviceMouseAdapter(viewer,
+				geometry);
 		addMouseListener(deviceMouseAdapter);
 		addMouseMotionListener(deviceMouseAdapter);
 	}
 
 	public double getScale()
 	{
-		return info.getScale();
+		return geometry.getScale();
 	}
 
 	public void setScale(double scale)
 	{
-		info.setScale(scale);
+		geometry.setScale(scale);
 		updatePreferredSize();
 	}
 
 	public boolean setImage(Image image)
 	{
 		this.image = image;
-		if (image.getWidth(null) != info.getWidth()
-				|| image.getHeight(null) != info.getHeight()) {
-			info.setHeight(image.getHeight(null));
-			info.setWidth(image.getWidth(null));
+		if (image.getWidth(null) != geometry.getWidth()
+				|| image.getHeight(null) != geometry.getHeight()) {
+			geometry.setHeight(image.getHeight(null));
+			geometry.setWidth(image.getWidth(null));
 			updatePreferredSize();
 			return true;
 		}
@@ -72,8 +73,8 @@ public class ScreenshotPanel extends JPanel
 
 	private void updatePreferredSize()
 	{
-		setPreferredSize(new Dimension(info.getDisplayWidth(),
-				info.getDisplayHeight()));
+		setPreferredSize(new Dimension(geometry.getDisplayWidth(),
+				geometry.getDisplayHeight()));
 	}
 
 	@Override
@@ -85,8 +86,8 @@ public class ScreenshotPanel extends JPanel
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		if (image != null) {
-			Image scaled = image.getScaledInstance(info.getDisplayWidth(),
-					info.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
+			Image scaled = image.getScaledInstance(geometry.getDisplayWidth(),
+					geometry.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
 
 			g.drawImage(scaled, 0, 0, null);
 		}

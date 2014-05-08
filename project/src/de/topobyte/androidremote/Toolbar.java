@@ -25,6 +25,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 
+import com.android.ddmlib.IDevice;
+
 public class Toolbar extends JToolBar
 {
 
@@ -32,6 +34,7 @@ public class Toolbar extends JToolBar
 
 	private JFrame frame;
 	private ScreenshotPanel screenshotPanel;
+	private IDevice device;
 
 	public Toolbar(JFrame frame, ScreenshotPanel screenshotPanel)
 	{
@@ -70,12 +73,7 @@ public class Toolbar extends JToolBar
 			@Override
 			public void actionPerformed(ActionEvent event)
 			{
-				try {
-					Util.sendKeyEvent(26);
-				} catch (IOException e) {
-					System.err.println("Error while sending event: "
-							+ e.getMessage());
-				}
+				sendPowerButtonShort();
 			}
 		});
 
@@ -84,24 +82,7 @@ public class Toolbar extends JToolBar
 			@Override
 			public void actionPerformed(ActionEvent event)
 			{
-				try {
-					Runtime.getRuntime().exec(
-							"adb shell sendevent /dev/input/event0 1 116 1");
-					Runtime.getRuntime().exec(
-							"adb shell sendevent /dev/input/event0 0 0 0");
-					try {
-						Thread.sleep(1500);
-					} catch (InterruptedException e) {
-						// ignore
-					}
-					Runtime.getRuntime().exec(
-							"adb shell sendevent /dev/input/event0 1 116 0");
-					Runtime.getRuntime().exec(
-							"adb shell sendevent /dev/input/event0 0 0 0");
-				} catch (IOException e) {
-					System.err.println("Error while sending event: "
-							+ e.getMessage());
-				}
+				sendPowerButtonLong();
 			}
 		});
 
@@ -111,10 +92,85 @@ public class Toolbar extends JToolBar
 		add(powerLong);
 	}
 
+	public void setDevice(IDevice device)
+	{
+		this.device = device;
+	}
+
+	protected void sendPowerButtonShort()
+	{
+		String name = device.getName();
+		if (name.startsWith("htc-nexus_one-")) {
+			try {
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event5 1 116 1");
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event5 0 0 0");
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event5 1 116 0");
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event5 0 0 0");
+			} catch (IOException e) {
+				System.err.println("Error while sending event: "
+						+ e.getMessage());
+			}
+		} else if (name.startsWith("lge-nexus_4-")
+				|| name.startsWith("lge-nexus_5-")) {
+			try {
+				Util.sendKeyEvent(26);
+			} catch (IOException e) {
+				System.err.println("Error while sending event: "
+						+ e.getMessage());
+			}
+		}
+	}
+
+	protected void sendPowerButtonLong()
+	{
+		String name = device.getName();
+		if (name.startsWith("htc-nexus_one-")) {
+			try {
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event5 1 116 1");
+				try {
+					Thread.sleep(1500);
+				} catch (InterruptedException e) {
+					// ignore
+				}
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event5 1 116 0");
+			} catch (IOException e) {
+				System.err.println("Error while sending event: "
+						+ e.getMessage());
+			}
+		} else if (name.startsWith("lge-nexus_4-")
+				|| name.startsWith("lge-nexus_5-")) {
+			try {
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event0 1 116 1");
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event0 0 0 0");
+				try {
+					Thread.sleep(1500);
+				} catch (InterruptedException e) {
+					// ignore
+				}
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event0 1 116 0");
+				Runtime.getRuntime().exec(
+						"adb shell sendevent /dev/input/event0 0 0 0");
+			} catch (IOException e) {
+				System.err.println("Error while sending event: "
+						+ e.getMessage());
+			}
+		}
+	}
+
 	protected void setNewScale(double scale)
 	{
 		screenshotPanel.setScale(scale);
 		frame.pack();
 		frame.repaint();
 	}
+
 }

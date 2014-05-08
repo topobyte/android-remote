@@ -53,18 +53,17 @@ public class Viewer
 		new Viewer(scale);
 	}
 
+	private DeviceInfo info;
+	private IDevice device;
+
 	private JFrame frame;
+	private Toolbar toolbar;
 	private ScreenshotPanel screenshotPanel;
 	private AndroidDebugBridge adb;
-	private IDevice device;
 	private ScreenshotFetcher screenshotFetcher;
 
 	public Viewer(double scale)
 	{
-		AndroidDebugBridge.init(false);
-		adb = AndroidDebugBridge.createBridge();
-		AndroidDebugBridge.addDeviceChangeListener(new DeviceListener());
-
 		frame = new JFrame("Android Remote Control");
 		frame.setSize(400, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,16 +71,30 @@ public class Viewer
 		JPanel panel = new JPanel(new BorderLayout());
 		frame.setContentPane(panel);
 
-		screenshotPanel = new ScreenshotPanel(scale);
-		Toolbar toolbar = new Toolbar(frame, screenshotPanel);
+		screenshotPanel = new ScreenshotPanel(this, scale);
+		toolbar = new Toolbar(frame, screenshotPanel);
 
 		panel.add(toolbar, BorderLayout.NORTH);
 		panel.add(screenshotPanel, BorderLayout.CENTER);
+
+		AndroidDebugBridge.init(false);
+		adb = AndroidDebugBridge.createBridge();
+		AndroidDebugBridge.addDeviceChangeListener(new DeviceListener());
 
 		frame.pack();
 		frame.setVisible(true);
 
 		frame.addKeyListener(new DeviceKeyAdapter());
+	}
+
+	public IDevice getDevice()
+	{
+		return device;
+	}
+
+	public DeviceInfo getDeviceInfo()
+	{
+		return info;
 	}
 
 	protected void update(final Image image)
@@ -117,6 +130,10 @@ public class Viewer
 		{
 			if (Viewer.this.device == null) {
 				Viewer.this.device = device;
+				toolbar.setDevice(device);
+
+				fetchInfo();
+				printInfo(info);
 				startFetcher();
 			}
 		}
@@ -126,6 +143,7 @@ public class Viewer
 		{
 			if (Viewer.this.device == device) {
 				Viewer.this.device = null;
+				Viewer.this.info = null;
 				screenshotFetcher.finish();
 			}
 		}
@@ -133,13 +151,13 @@ public class Viewer
 		@Override
 		public void deviceChanged(IDevice device, int mask)
 		{
-			// ignore
+			fetchInfo();
+			printInfo(info);
 		}
 	}
 
 	public void startFetcher()
 	{
-
 		screenshotFetcher = new ScreenshotFetcher(device) {
 
 			@Override
@@ -150,6 +168,26 @@ public class Viewer
 		};
 		Thread thread = new Thread(screenshotFetcher);
 		thread.start();
+	}
+
+	public void fetchInfo()
+	{
+		String name = device.getName();
+		int apiLevel = 1;
+		try {
+			String api = device
+					.getPropertyCacheOrSync(IDevice.PROP_BUILD_API_LEVEL);
+			apiLevel = Integer.parseInt(api);
+		} catch (Exception e) {
+			System.err.println("Error while fetching api level");
+		}
+		info = new DeviceInfo(name, apiLevel);
+	}
+
+	public void printInfo(DeviceInfo info)
+	{
+		System.out.println("device name: '" + info.getName() + "'");
+		System.out.println("api level: " + info.getApiLevel());
 	}
 
 }

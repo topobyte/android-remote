@@ -20,62 +20,23 @@ package de.topobyte.androidremote;
 public class DeviceInfo
 {
 
-	private double scale;
-	private int width, height;
-	private int displayWidth, displayHeight;
+	private String name;
+	private int apiLevel;
 
-	public DeviceInfo(double scale)
+	public DeviceInfo(String name, int apiLevel)
 	{
-		this.scale = scale;
+		this.name = name;
+		this.apiLevel = apiLevel;
 	}
 
-	public double getScale()
+	public String getName()
 	{
-		return scale;
+		return name;
 	}
 
-	public int getWidth()
+	public int getApiLevel()
 	{
-		return width;
-	}
-
-	public void setWidth(int width)
-	{
-		this.width = width;
-		updateValues();
-	}
-
-	public int getHeight()
-	{
-		return height;
-	}
-
-	public void setHeight(int height)
-	{
-		this.height = height;
-		updateValues();
-	}
-
-	public int getDisplayWidth()
-	{
-		return displayWidth;
-	}
-
-	public int getDisplayHeight()
-	{
-		return displayHeight;
-	}
-
-	public void setScale(double scale)
-	{
-		this.scale = scale;
-		updateValues();
-	}
-
-	private void updateValues()
-	{
-		displayWidth = (int) Math.round(width * scale);
-		displayHeight = (int) Math.round(height * scale);
+		return apiLevel;
 	}
 
 }

@@ -24,11 +24,13 @@ import java.io.IOException;
 public class DeviceMouseAdapter extends MouseAdapter
 {
 
-	private DeviceInfo info;
+	private Viewer viewer;
+	private DeviceGeometry geometry;
 
-	public DeviceMouseAdapter(DeviceInfo info)
+	public DeviceMouseAdapter(Viewer viewer, DeviceGeometry geometry)
 	{
-		this.info = info;
+		this.viewer = viewer;
+		this.geometry = geometry;
 	}
 
 	@Override
@@ -38,10 +40,12 @@ public class DeviceMouseAdapter extends MouseAdapter
 		if (!inDeviceBounds(e)) {
 			return;
 		}
+
 		int x = e.getX();
 		int y = e.getY();
-		double deviceX = x / info.getScale();
-		double deviceY = y / info.getScale();
+		double deviceX = x / geometry.getScale();
+		double deviceY = y / geometry.getScale();
+
 		doPress((int) Math.round(deviceX), (int) Math.round(deviceY));
 	}
 
@@ -49,22 +53,24 @@ public class DeviceMouseAdapter extends MouseAdapter
 	public void mouseReleased(MouseEvent e)
 	{
 		super.mouseReleased(e);
+
 		int x = e.getX();
 		int y = e.getY();
-		double deviceX = x / info.getScale();
-		double deviceY = y / info.getScale();
+		double deviceX = x / geometry.getScale();
+		double deviceY = y / geometry.getScale();
 		if (deviceX < 0) {
 			deviceX = 0;
 		}
-		if (deviceX > info.getWidth()) {
-			deviceX = info.getWidth();
+		if (deviceX > geometry.getWidth()) {
+			deviceX = geometry.getWidth();
 		}
 		if (deviceY < 0) {
 			deviceY = 0;
 		}
-		if (deviceY > info.getHeight()) {
-			deviceY = info.getHeight();
+		if (deviceY > geometry.getHeight()) {
+			deviceY = geometry.getHeight();
 		}
+
 		doRelease((int) Math.round(deviceX), (int) Math.round(deviceY));
 	}
 
@@ -87,12 +93,32 @@ public class DeviceMouseAdapter extends MouseAdapter
 
 		int duration = (int) (timeRelease - timePress);
 		if (duration < 100) {
+			tap(deviceX, deviceY);
+		} else {
+			swipe(deviceX, deviceY, duration);
+		}
+	}
+
+	private void tap(int deviceX, int deviceY)
+	{
+		DeviceInfo info = viewer.getDeviceInfo();
+		if (info.getApiLevel() <= 10) {
+			// TODO: emulate events differently
+		} else {
 			try {
 				Util.sendTap(deviceX, deviceY);
 			} catch (IOException e) {
 				System.err.println("Error while sending mouse press: "
 						+ e.getMessage());
 			}
+		}
+	}
+
+	private void swipe(int deviceX, int deviceY, int duration)
+	{
+		DeviceInfo info = viewer.getDeviceInfo();
+		if (info.getApiLevel() <= 10) {
+			// TODO: emulate events differently
 		} else {
 			try {
 				Util.sendSwipe(pressX, pressY, deviceX, deviceY, duration);
@@ -105,8 +131,8 @@ public class DeviceMouseAdapter extends MouseAdapter
 
 	private boolean inDeviceBounds(MouseEvent e)
 	{
-		return e.getX() <= info.getDisplayWidth()
-				&& e.getY() <= info.getDisplayHeight();
+		return e.getX() <= geometry.getDisplayWidth()
+				&& e.getY() <= geometry.getDisplayHeight();
 	}
 
 }
