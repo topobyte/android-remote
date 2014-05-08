@@ -26,7 +26,8 @@ public class Util
 {
 	private static String CMD_SCREENCAP = "adb shell screencap -p";
 	private static String CMD_TAP = "adb shell input tap %d %d";
-	private static String CMD_SWIPE = "adb shell input swipe %d %d %d %d %d";
+	private static String CMD_SWIPE = "adb shell input swipe %d %d %d %d";
+	private static String CMD_SWIPE_DURATION = "adb shell input swipe %d %d %d %d %d";
 	private static String CMD_TEXT = "adb shell input text %s";
 	private static String CMD_KEYEVENT = "adb shell input keyevent %d";
 
@@ -91,7 +92,9 @@ public class Util
 	public static void sendSwipe(int x, int y, int x2, int y2, int duration)
 			throws IOException
 	{
-		String cmd = String.format(CMD_SWIPE, x, y, x2, y2, duration);
+		// String cmd = String.format(CMD_SWIPE_DURATION, x, y, x2, y2,
+		// duration);
+		String cmd = String.format(CMD_SWIPE, x, y, x2, y2);
 		System.out.println(cmd);
 		Runtime.getRuntime().exec(cmd);
 	}
