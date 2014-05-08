@@ -42,6 +42,7 @@ public class DeviceInfo
 	public void setWidth(int width)
 	{
 		this.width = width;
+		updateValues();
 	}
 
 	public int getHeight()
@@ -52,6 +53,7 @@ public class DeviceInfo
 	public void setHeight(int height)
 	{
 		this.height = height;
+		updateValues();
 	}
 
 	public int getDisplayWidth()
@@ -59,19 +61,21 @@ public class DeviceInfo
 		return displayWidth;
 	}
 
-	public void setDisplayWidth(int displayWidth)
-	{
-		this.displayWidth = displayWidth;
-	}
-
 	public int getDisplayHeight()
 	{
 		return displayHeight;
 	}
 
-	public void setDisplayHeight(int displayHeight)
+	public void setScale(double scale)
 	{
-		this.displayHeight = displayHeight;
+		this.scale = scale;
+		updateValues();
+	}
+
+	private void updateValues()
+	{
+		displayWidth = (int) Math.round(width * scale);
+		displayHeight = (int) Math.round(height * scale);
 	}
 
 }

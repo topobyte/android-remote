@@ -1,0 +1,120 @@
+// Copyright 2014 Sebastian Kuerten
+//
+// This file is part of android-remote.
+//
+// android-remote is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// android-remote is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with android-remote. If not, see <http://www.gnu.org/licenses/>.
+
+package de.topobyte.androidremote;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JToolBar;
+
+public class Toolbar extends JToolBar
+{
+
+	private static final long serialVersionUID = 1L;
+
+	private JFrame frame;
+	private ScreenshotPanel screenshotPanel;
+
+	public Toolbar(JFrame frame, ScreenshotPanel screenshotPanel)
+	{
+		this.frame = frame;
+		this.screenshotPanel = screenshotPanel;
+
+		setFloatable(false);
+
+		JButton zoomIn = new JButton("+");
+		JButton zoomOut = new JButton("-");
+		JButton power = new JButton("o");
+		JButton powerLong = new JButton("O");
+
+		zoomIn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				double scale = Toolbar.this.screenshotPanel.getScale();
+				setNewScale(scale * 1.25);
+			}
+		});
+
+		zoomOut.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				double scale = Toolbar.this.screenshotPanel.getScale();
+				setNewScale(scale / 1.25);
+			}
+		});
+
+		power.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				try {
+					Util.sendKeyEvent(26);
+				} catch (IOException e) {
+					System.err.println("Error while sending event: "
+							+ e.getMessage());
+				}
+			}
+		});
+
+		powerLong.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				try {
+					Runtime.getRuntime().exec(
+							"adb shell sendevent /dev/input/event0 1 116 1");
+					Runtime.getRuntime().exec(
+							"adb shell sendevent /dev/input/event0 0 0 0");
+					try {
+						Thread.sleep(1500);
+					} catch (InterruptedException e) {
+						// ignore
+					}
+					Runtime.getRuntime().exec(
+							"adb shell sendevent /dev/input/event0 1 116 0");
+					Runtime.getRuntime().exec(
+							"adb shell sendevent /dev/input/event0 0 0 0");
+				} catch (IOException e) {
+					System.err.println("Error while sending event: "
+							+ e.getMessage());
+				}
+			}
+		});
+
+		add(zoomIn);
+		add(zoomOut);
+		add(power);
+		add(powerLong);
+	}
+
+	protected void setNewScale(double scale)
+	{
+		screenshotPanel.setScale(scale);
+		frame.pack();
+		frame.repaint();
+	}
+}

@@ -28,6 +28,7 @@ public abstract class ScreenshotFetcher implements Runnable
 {
 
 	private IDevice device;
+	private boolean valid = true;
 
 	public ScreenshotFetcher(IDevice device)
 	{
@@ -36,10 +37,15 @@ public abstract class ScreenshotFetcher implements Runnable
 
 	public abstract void screenshotAvailabe(BufferedImage image);
 
+	public void finish()
+	{
+		valid = false;
+	}
+
 	@Override
 	public void run()
 	{
-		while (true) {
+		while (valid) {
 			boolean success = false;
 			try {
 				BufferedImage image = Util.getScreenshot(device);

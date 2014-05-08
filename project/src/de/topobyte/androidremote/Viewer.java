@@ -57,6 +57,7 @@ public class Viewer
 	private ScreenshotPanel screenshotPanel;
 	private AndroidDebugBridge adb;
 	private IDevice device;
+	private ScreenshotFetcher screenshotFetcher;
 
 	public Viewer(double scale)
 	{
@@ -72,6 +73,9 @@ public class Viewer
 		frame.setContentPane(panel);
 
 		screenshotPanel = new ScreenshotPanel(scale);
+		Toolbar toolbar = new Toolbar(frame, screenshotPanel);
+
+		panel.add(toolbar, BorderLayout.NORTH);
 		panel.add(screenshotPanel, BorderLayout.CENTER);
 
 		frame.pack();
@@ -122,6 +126,7 @@ public class Viewer
 		{
 			if (Viewer.this.device == device) {
 				Viewer.this.device = null;
+				screenshotFetcher.finish();
 			}
 		}
 
@@ -135,7 +140,7 @@ public class Viewer
 	public void startFetcher()
 	{
 
-		ScreenshotFetcher screenshotFetcher = new ScreenshotFetcher(device) {
+		screenshotFetcher = new ScreenshotFetcher(device) {
 
 			@Override
 			public void screenshotAvailabe(BufferedImage image)

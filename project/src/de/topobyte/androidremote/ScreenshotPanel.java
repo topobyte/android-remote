@@ -31,14 +31,12 @@ public class ScreenshotPanel extends JPanel
 
 	private static final long serialVersionUID = 1L;
 
-	private double scale;
 	private Image image;
 
 	private DeviceInfo info;
 
 	public ScreenshotPanel(double scale)
 	{
-		this.scale = scale;
 		setPreferredSize(new Dimension(200, 200));
 
 		info = new DeviceInfo(scale);
@@ -48,6 +46,17 @@ public class ScreenshotPanel extends JPanel
 		addMouseMotionListener(deviceMouseAdapter);
 	}
 
+	public double getScale()
+	{
+		return info.getScale();
+	}
+
+	public void setScale(double scale)
+	{
+		info.setScale(scale);
+		updatePreferredSize();
+	}
+
 	public boolean setImage(Image image)
 	{
 		this.image = image;
@@ -55,14 +64,16 @@ public class ScreenshotPanel extends JPanel
 				|| image.getHeight(null) != info.getHeight()) {
 			info.setHeight(image.getHeight(null));
 			info.setWidth(image.getWidth(null));
-			int w = (int) Math.round(image.getWidth(null) * scale);
-			int h = (int) Math.round(image.getHeight(null) * scale);
-			info.setDisplayWidth(w);
-			info.setDisplayHeight(h);
-			setPreferredSize(new Dimension(w, h));
+			updatePreferredSize();
 			return true;
 		}
 		return false;
+	}
+
+	private void updatePreferredSize()
+	{
+		setPreferredSize(new Dimension(info.getDisplayWidth(),
+				info.getDisplayHeight()));
 	}
 
 	@Override
