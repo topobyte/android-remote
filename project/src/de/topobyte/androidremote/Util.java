@@ -25,6 +25,8 @@ import java.io.InputStream;
 public class Util
 {
 	private static String CMD_SCREENCAP = "adb shell screencap -p";
+	private static String CMD_TAP = "adb shell input tap %d %d";
+	private static String CMD_SWIPE = "adb shell input swipe %d %d %d %d %d";
 
 	public static boolean haveAdbInPath()
 	{
@@ -75,5 +77,20 @@ public class Util
 		byte[] bytes = readFully(is);
 		is.close();
 		return bytes;
+	}
+
+	public static void sendTap(int x, int y) throws IOException
+	{
+		String cmd = String.format(CMD_TAP, x, y);
+		System.out.println(cmd);
+		Runtime.getRuntime().exec(cmd);
+	}
+
+	public static void sendSwipe(int x, int y, int x2, int y2, int duration)
+			throws IOException
+	{
+		String cmd = String.format(CMD_SWIPE, x, y, x2, y2, duration);
+		System.out.println(cmd);
+		Runtime.getRuntime().exec(cmd);
 	}
 }

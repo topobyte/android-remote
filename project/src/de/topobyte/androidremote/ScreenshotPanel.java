@@ -34,20 +34,35 @@ public class ScreenshotPanel extends JPanel
 	private double scale;
 	private BufferedImage image;
 
-	private int w, h;
+	private DeviceInfo info;
 
 	public ScreenshotPanel(double scale)
 	{
 		this.scale = scale;
 		setPreferredSize(new Dimension(200, 200));
+
+		info = new DeviceInfo(scale);
+
+		DeviceMouseAdapter deviceMouseAdapter = new DeviceMouseAdapter(info);
+		addMouseListener(deviceMouseAdapter);
+		addMouseMotionListener(deviceMouseAdapter);
 	}
 
-	public void setImage(BufferedImage image)
+	public boolean setImage(BufferedImage image)
 	{
 		this.image = image;
-		w = (int) Math.round(image.getWidth() * scale);
-		h = (int) Math.round(image.getHeight() * scale);
-		setPreferredSize(new Dimension(w, h));
+		if (image.getWidth() != info.getWidth()
+				|| image.getHeight() != info.getHeight()) {
+			info.setHeight(image.getHeight());
+			info.setWidth(image.getWidth());
+			int w = (int) Math.round(image.getWidth() * scale);
+			int h = (int) Math.round(image.getHeight() * scale);
+			info.setDisplayWidth(w);
+			info.setDisplayHeight(h);
+			setPreferredSize(new Dimension(w, h));
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -59,8 +74,8 @@ public class ScreenshotPanel extends JPanel
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		if (image != null) {
-			Image scaled = image.getScaledInstance(w, h,
-					BufferedImage.SCALE_SMOOTH);
+			Image scaled = image.getScaledInstance(info.getDisplayWidth(),
+					info.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
 
 			g.drawImage(scaled, 0, 0, null);
 		}

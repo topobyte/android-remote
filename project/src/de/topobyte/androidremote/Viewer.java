@@ -49,7 +49,7 @@ public class Viewer
 	{
 		double scale = 0.3;
 
-		frame = new JFrame();
+		frame = new JFrame("Android Remote Control");
 		frame.setSize(400, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -96,8 +96,10 @@ public class Viewer
 
 	private void update(BufferedImage image)
 	{
-		screenshotPanel.setImage(image);
-		frame.pack();
+		boolean sizeChanged = screenshotPanel.setImage(image);
+		if (sizeChanged) {
+			frame.pack();
+		}
 		screenshotPanel.repaint();
 	}
 
