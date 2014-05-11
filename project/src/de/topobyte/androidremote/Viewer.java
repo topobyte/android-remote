@@ -74,6 +74,8 @@ public class Viewer
 		screenshotPanel = new ScreenshotPanel(this, scale);
 		toolbar = new Toolbar(frame, screenshotPanel);
 
+		screenshotPanel.setFocusable(true);
+
 		panel.add(toolbar, BorderLayout.NORTH);
 		panel.add(screenshotPanel, BorderLayout.CENTER);
 
@@ -84,7 +86,7 @@ public class Viewer
 		frame.pack();
 		frame.setVisible(true);
 
-		frame.addKeyListener(new DeviceKeyAdapter());
+		screenshotPanel.addKeyListener(new DeviceKeyAdapter());
 	}
 
 	public IDevice getDevice()
