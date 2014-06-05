@@ -39,16 +39,23 @@ public class Viewer
 					.println("Unable to execute adb. Have you set up the path correctly?");
 			System.exit(1);
 		}
-		System.out.println("Okay, let's begin");
 
 		double scale = 0.3;
 		if (args.length > 0) {
 			String argScale = args[0];
-			double value = Double.parseDouble(argScale);
-			if (value != 0) {
-				scale = value;
+			try {
+				double value = Double.parseDouble(argScale);
+				if (value != 0) {
+					scale = value;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("usage: " + Viewer.class.getSimpleName()
+						+ " [scale]");
+				System.exit(1);
 			}
 		}
+
+		System.out.println("ADB, let's go");
 
 		new Viewer(scale);
 	}
