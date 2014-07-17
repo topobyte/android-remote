@@ -72,7 +72,7 @@ public class DeviceListPanel extends JPanel implements IDeviceChangeListener
 
 	private DevicePanel createPanel(IDevice device)
 	{
-		DevicePanel devicePanel = new DevicePanel(device);
+		DevicePanel devicePanel = new DevicePanel(toolkit, device);
 		deviceToPanel.put(device, devicePanel);
 		devicePanels.add(devicePanel);
 		return devicePanel;

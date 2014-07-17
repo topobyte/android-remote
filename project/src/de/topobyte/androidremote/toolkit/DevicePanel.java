@@ -33,13 +33,15 @@ public class DevicePanel extends JPanel
 
 	private static final long serialVersionUID = 1L;
 
+	private Toolkit toolkit;
 	private IDevice device;
 
 	private JLabel labelTitle;
 	private DropApkPanel dropApk;
 
-	public DevicePanel(IDevice device)
+	public DevicePanel(Toolkit toolkit, IDevice device)
 	{
+		this.toolkit = toolkit;
 		this.device = device;
 		setLayout(new GridBagLayout());
 
@@ -55,7 +57,7 @@ public class DevicePanel extends JPanel
 
 		labelTitle = new JLabel();
 		updateTitle();
-		dropApk = new DropApkPanel();
+		dropApk = new DropApkPanel(toolkit, device);
 		dropApk.setPreferredSize(new Dimension(200, 100));
 		dropApk.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 

@@ -33,6 +33,9 @@ public class ToolkitFrame extends JFrame
 	private JPanel mainPanel;
 	private JTabbedPane tabs;
 
+	private DeviceListPanel deviceListPanel;
+	private DebugOutputPanel debugOutputPanel;
+
 	public ToolkitFrame(Toolkit toolkit)
 	{
 		super("ADB Toolkit");
@@ -47,8 +50,16 @@ public class ToolkitFrame extends JFrame
 		c.weighty = 1.0;
 		mainPanel.add(tabs, c);
 
-		DeviceListPanel deviceListPanel = new DeviceListPanel(toolkit);
+		deviceListPanel = new DeviceListPanel(toolkit);
 		JScrollPane jspDeviceList = new JScrollPane(deviceListPanel);
 		tabs.add("Devices", jspDeviceList);
+
+		debugOutputPanel = new DebugOutputPanel();
+		tabs.add("Output", debugOutputPanel);
+	}
+
+	public DebugOutputPanel getDebugOutputPanel()
+	{
+		return debugOutputPanel;
 	}
 }
