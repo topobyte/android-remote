@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with android-remote. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.androidremote.viewer;
+package de.topobyte.androidremote;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;

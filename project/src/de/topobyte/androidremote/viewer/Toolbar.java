@@ -27,6 +27,8 @@ import javax.swing.JToolBar;
 
 import com.android.ddmlib.IDevice;
 
+import de.topobyte.androidremote.Util;
+
 public class Toolbar extends JToolBar
 {
 

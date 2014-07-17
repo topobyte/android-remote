@@ -24,6 +24,8 @@ import com.android.ddmlib.AdbCommandRejectedException;
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.TimeoutException;
 
+import de.topobyte.androidremote.Util;
+
 public abstract class ScreenshotFetcher implements Runnable
 {
 

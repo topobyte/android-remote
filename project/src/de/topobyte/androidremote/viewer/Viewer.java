@@ -29,6 +29,8 @@ import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener;
 import com.android.ddmlib.IDevice;
 
+import de.topobyte.androidremote.Util;
+
 public class Viewer
 {
 

@@ -21,6 +21,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import de.topobyte.androidremote.Util;
+
 public class DeviceKeyAdapter extends KeyAdapter
 {
 
