@@ -20,8 +20,12 @@ package de.topobyte.androidremote.toolkit;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
@@ -45,12 +49,6 @@ public class DevicePanel extends JPanel
 		this.device = device;
 		setLayout(new GridBagLayout());
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.WEST;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx = 1.0;
-
 		setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createBevelBorder(BevelBorder.LOWERED),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -61,9 +59,37 @@ public class DevicePanel extends JPanel
 		dropApk.setPreferredSize(new Dimension(200, 100));
 		dropApk.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 
+		JButton buttonListPackages = new JButton("List packages");
+		buttonListPackages.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				PackageDialog packageDialog = new PackageDialog(
+						DevicePanel.this.toolkit, DevicePanel.this.device);
+				packageDialog.setSize(400, 300);
+				packageDialog.setVisible(true);
+			}
+		});
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+
+		c.anchor = GridBagConstraints.WEST;
+		c.weightx = 1.0;
+		c.gridwidth = 2;
 		add(labelTitle, c);
+
+		c.anchor = GridBagConstraints.NORTHWEST;
+		c.weightx = 0.0;
+		c.gridwidth = 1;
 		c.gridy++;
+		c.gridx = 0;
 		add(dropApk, c);
+		c.gridx = 1;
+		c.insets = new Insets(0, 2, 0, 2);
+		add(buttonListPackages, c);
 	}
 
 	private void updateTitle()

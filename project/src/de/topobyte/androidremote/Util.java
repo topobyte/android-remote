@@ -24,6 +24,7 @@ import java.io.IOException;
 import com.android.ddmlib.AdbCommandRejectedException;
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.RawImage;
+import com.android.ddmlib.ShellCommandUnresponsiveException;
 import com.android.ddmlib.TimeoutException;
 
 public class Util
@@ -110,5 +111,14 @@ public class Util
 		String cmd = String.format(CMD_KEYEVENT, key);
 		System.out.println(cmd);
 		Runtime.getRuntime().exec(cmd);
+	}
+
+	public static String executeShellCommand(IDevice device, String command)
+			throws TimeoutException, AdbCommandRejectedException,
+			ShellCommandUnresponsiveException, IOException
+	{
+		CommandResultGatherer gatherer = new CommandResultGatherer();
+		device.executeShellCommand(command, gatherer);
+		return gatherer.getOutput();
 	}
 }

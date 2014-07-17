@@ -18,6 +18,11 @@
 package de.topobyte.androidremote.toolkit;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +66,15 @@ public class Toolkit
 		frame.setVisible(true);
 	}
 
+	private String separator = System.getProperty("line.separator");
+
+	private void message(String message)
+	{
+		System.out.println(message);
+		frame.getDebugOutputPanel().push(message);
+		frame.getDebugOutputPanel().push(separator);
+	}
+
 	public DeviceList getDeviceList()
 	{
 		return deviceList;
@@ -94,27 +108,59 @@ public class Toolkit
 			public void run()
 			{
 				for (File file : files) {
-					message("Uploading file: '" + file.getAbsolutePath() + "'");
-					try {
-						device.installPackage(file.getAbsolutePath(), true);
-					} catch (InstallException e) {
-						message("Error while installing: " + e.getMessage());
-					}
+					upload(file);
 				}
 				message("Finished uploading files");
+			}
+
+			private void upload(File file)
+			{
+				message("Uploading file: '" + file.getAbsolutePath() + "'");
+				File tmpFile = null;
+				try {
+					tmpFile = File.createTempFile("androidtoolkit", ".apk");
+					Path source = Paths.get(file.getAbsolutePath());
+					Path target = Paths.get(tmpFile.getAbsolutePath());
+					Files.copy(source, target,
+							StandardCopyOption.REPLACE_EXISTING);
+					String result = device.installPackage(
+							tmpFile.getAbsolutePath(), true);
+					if (result == null) {
+						message("Success");
+					} else {
+						message(result);
+					}
+				} catch (IOException e) {
+					message("Error while copying APK to temporary location: "
+							+ e.getMessage());
+					e.printStackTrace();
+				} catch (InstallException e) {
+					message("Error while installing: " + e.getMessage());
+				} finally {
+					if (tmpFile != null) {
+						tmpFile.delete();
+					}
+				}
 			}
 
 		};
 		new Thread(uploadTask).start();
 	}
 
-	private String separator = System.getProperty("line.separator");
-
-	private void message(String message)
+	public void uninstallFromDevice(IDevice device, List<App> apps)
 	{
-		System.out.println(message);
-		frame.getDebugOutputPanel().push(message);
-		frame.getDebugOutputPanel().push(separator);
+		for (App app : apps) {
+			message("Uninstalling: " + app.getPackageName());
+			try {
+				String result = device.uninstallPackage(app.getPackageName());
+				if (result == null) {
+					message("Success");
+				} else {
+					message(result);
+				}
+			} catch (InstallException e) {
+				message("Error while uninstalling: " + e.getMessage());
+			}
+		}
 	}
-
 }
