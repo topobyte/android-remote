@@ -14,5 +14,5 @@ CLASSPATH+=:$DIR/../bin/
 CLASSPATH+=:$DIR/../
 #echo "CLASSPATH=$CLASSPATH"
 
-CMD="java -cp $CLASSPATH de.topobyte.androidremote.Viewer"
+CMD="java -cp $CLASSPATH de.topobyte.androidremote.viewer.Viewer"
 exec $CMD "$@"

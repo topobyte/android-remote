@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with android-remote. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.androidremote;
+package de.topobyte.androidremote.viewer;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
