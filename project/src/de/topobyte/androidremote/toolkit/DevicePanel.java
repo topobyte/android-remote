@@ -44,10 +44,13 @@ public class DevicePanel extends JPanel
 	private DropApkPanel dropApk;
 	private ScreenshotPanel screenshotPanel;
 
+	private String deviceName = null;
+
 	public DevicePanel(Toolkit toolkit, IDevice device)
 	{
 		this.toolkit = toolkit;
 		this.device = device;
+		deviceName = device.getName();
 		setLayout(new GridBagLayout());
 
 		setBorder(BorderFactory.createCompoundBorder(
@@ -79,7 +82,7 @@ public class DevicePanel extends JPanel
 		screenshotPanel.getPathScreenshots().setText(
 				toolkit.getDefaultScreenshotPath());
 		screenshotPanel.getPatternFilenames().setText(
-				toolkit.getDefaultScreenshotPattern());
+				toolkit.getDefaultScreenshotPattern(device));
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -106,14 +109,24 @@ public class DevicePanel extends JPanel
 		add(screenshotPanel, c);
 	}
 
+	public void update(IDevice device, int changeMask)
+	{
+		if (!device.getName().equals(deviceName)) {
+			deviceName = device.getName();
+			updateTitle();
+			updateScreenshotPanel();
+		}
+	}
+
 	private void updateTitle()
 	{
 		labelTitle.setText("Device: '" + device.getName() + "'");
 	}
 
-	public void update(IDevice device, int changeMask)
+	private void updateScreenshotPanel()
 	{
-		updateTitle();
+		screenshotPanel.getPatternFilenames().setText(
+				toolkit.getDefaultScreenshotPattern(device));
 	}
 
 }

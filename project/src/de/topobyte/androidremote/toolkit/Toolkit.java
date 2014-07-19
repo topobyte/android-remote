@@ -171,8 +171,11 @@ public class Toolkit
 		return "/home/z/git/google-play/stadtplan-ng/screenshots";
 	}
 
-	public String getDefaultScreenshotPattern()
+	public String getDefaultScreenshotPattern(IDevice device)
 	{
+		if (device.getName().contains("nook")) {
+			return "Tablet%02d.png";
+		}
 		return "Screen%02d.png";
 	}
 
