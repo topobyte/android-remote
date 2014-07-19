@@ -78,6 +78,8 @@ public class DevicePanel extends JPanel
 				.createTitledBorder("Screenshot"));
 		screenshotPanel.getPathScreenshots().setText(
 				toolkit.getDefaultScreenshotPath());
+		screenshotPanel.getPatternFilenames().setText(
+				toolkit.getDefaultScreenshotPattern());
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;

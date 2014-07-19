@@ -36,26 +36,36 @@ public class ScreenshotPanel extends JPanel
 	private static final long serialVersionUID = 1L;
 
 	private JTextField pathScreenshots;
+	private JTextField patternFilenames;
 	private JButton takeScreenshot;
 
 	public ScreenshotPanel(final Toolkit toolkit, final IDevice device)
 	{
 		setLayout(new GridBagLayout());
 		JLabel labelPath = new JLabel("Path:");
+		JLabel labelName = new JLabel("Name:");
 		pathScreenshots = new JTextField();
+		patternFilenames = new JTextField();
 		takeScreenshot = new JButton("Take");
 
 		Dimension ps = pathScreenshots.getPreferredSize();
 		pathScreenshots.setPreferredSize(new Dimension(500, ps.height));
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
 
+		c.gridy = 0;
+		c.gridx = 0;
 		add(labelPath, c);
 		c.gridx++;
 		add(pathScreenshots, c);
+
+		c.gridy++;
+		c.gridx = 0;
+		add(labelName, c);
+		c.gridx++;
+		add(patternFilenames, c);
+
 		c.gridwidth = 2;
 		c.gridx = 0;
 		c.gridy++;
@@ -66,7 +76,8 @@ public class ScreenshotPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				toolkit.takeScreenshot(device, pathScreenshots.getText());
+				toolkit.takeScreenshot(device, pathScreenshots.getText(),
+						patternFilenames.getText());
 			}
 		});
 	}
@@ -74,6 +85,11 @@ public class ScreenshotPanel extends JPanel
 	public JTextField getPathScreenshots()
 	{
 		return pathScreenshots;
+	}
+
+	public JTextField getPatternFilenames()
+	{
+		return patternFilenames;
 	}
 
 }

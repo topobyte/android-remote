@@ -171,7 +171,12 @@ public class Toolkit
 		return "/home/z/git/google-play/stadtplan-ng/screenshots";
 	}
 
-	public void takeScreenshot(IDevice device, String pathDir)
+	public String getDefaultScreenshotPattern()
+	{
+		return "Screen%02d.png";
+	}
+
+	public void takeScreenshot(IDevice device, String pathDir, String pattern)
 	{
 		File dir = new File(pathDir);
 		if (!dir.exists()) {
@@ -183,14 +188,38 @@ public class Toolkit
 		}
 		if (!dir.exists()) {
 			message("Unable to create directory");
+			return;
 		}
 		if (!dir.canWrite()) {
 			message("Unable to write to directory");
+			return;
 		}
+
+		boolean varies = !String.format(pattern, 1).equals(
+				String.format(pattern, 2));
+		File file = null;
+		int i = 1;
+		while (true) {
+			String filename = String.format(pattern, i);
+			file = new File(dir, filename);
+			if (!file.exists()) {
+				break;
+			}
+			if (!varies) {
+				break;
+			}
+			i++;
+		}
+		if (file.exists()) {
+			message("File already exists");
+			return;
+		}
+
 		try {
+			message("Capturing screenshot to: '" + file.getAbsolutePath() + "'");
 			BufferedImage image = Util.getScreenshot(device);
-			File file = new File(dir, "Blah.png");
 			ImageIO.write(image, "PNG", file);
+			message("Success");
 		} catch (Exception e) {
 			message("Unable to capture screenshot");
 			message(e.getClass().getSimpleName() + ": " + e.getMessage());
