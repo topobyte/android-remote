@@ -42,6 +42,7 @@ public class DevicePanel extends JPanel
 
 	private JLabel labelTitle;
 	private DropApkPanel dropApk;
+	private ScreenshotPanel screenshotPanel;
 
 	public DevicePanel(Toolkit toolkit, IDevice device)
 	{
@@ -72,6 +73,12 @@ public class DevicePanel extends JPanel
 			}
 		});
 
+		screenshotPanel = new ScreenshotPanel(toolkit, device);
+		screenshotPanel.setBorder(BorderFactory
+				.createTitledBorder("Screenshot"));
+		screenshotPanel.getPathScreenshots().setText(
+				toolkit.getDefaultScreenshotPath());
+
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -79,17 +86,22 @@ public class DevicePanel extends JPanel
 		c.anchor = GridBagConstraints.WEST;
 		c.weightx = 1.0;
 		c.gridwidth = 2;
+		c.gridheight = 1;
 		add(labelTitle, c);
 
 		c.anchor = GridBagConstraints.NORTHWEST;
 		c.weightx = 0.0;
 		c.gridwidth = 1;
+		c.gridheight = 2;
 		c.gridy++;
 		c.gridx = 0;
 		add(dropApk, c);
+		c.gridheight = 1;
 		c.gridx = 1;
 		c.insets = new Insets(0, 2, 0, 2);
 		add(buttonListPackages, c);
+		c.gridy++;
+		add(screenshotPanel, c);
 	}
 
 	private void updateTitle()
@@ -101,4 +113,5 @@ public class DevicePanel extends JPanel
 	{
 		updateTitle();
 	}
+
 }

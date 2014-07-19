@@ -17,6 +17,7 @@
 
 package de.topobyte.androidremote.toolkit;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,6 +27,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import com.android.ddmlib.AndroidDebugBridge;
@@ -161,6 +163,37 @@ public class Toolkit
 			} catch (InstallException e) {
 				message("Error while uninstalling: " + e.getMessage());
 			}
+		}
+	}
+
+	public String getDefaultScreenshotPath()
+	{
+		return "/home/z/git/google-play/stadtplan-ng/screenshots";
+	}
+
+	public void takeScreenshot(IDevice device, String pathDir)
+	{
+		File dir = new File(pathDir);
+		if (!dir.exists()) {
+			boolean success = dir.mkdirs();
+			if (!success) {
+				message("Unable to create directory");
+				return;
+			}
+		}
+		if (!dir.exists()) {
+			message("Unable to create directory");
+		}
+		if (!dir.canWrite()) {
+			message("Unable to write to directory");
+		}
+		try {
+			BufferedImage image = Util.getScreenshot(device);
+			File file = new File(dir, "Blah.png");
+			ImageIO.write(image, "PNG", file);
+		} catch (Exception e) {
+			message("Unable to capture screenshot");
+			message(e.getClass().getSimpleName() + ": " + e.getMessage());
 		}
 	}
 }
