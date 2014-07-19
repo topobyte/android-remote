@@ -195,8 +195,14 @@ public class Toolkit
 			return;
 		}
 
-		boolean varies = !String.format(pattern, 1).equals(
-				String.format(pattern, 2));
+		boolean varies = false;
+		try {
+			varies = !String.format(pattern, 1).equals(
+					String.format(pattern, 2));
+		} catch (Exception e) {
+			message("Error processing the filename pattern");
+			return;
+		}
 		File file = null;
 		int i = 1;
 		while (true) {
