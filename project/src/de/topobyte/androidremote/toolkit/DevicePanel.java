@@ -23,6 +23,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -64,17 +65,12 @@ public class DevicePanel extends JPanel
 		dropApk.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 
 		JButton buttonListPackages = new JButton("List packages");
-		buttonListPackages.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				PackageDialog packageDialog = new PackageDialog(
-						DevicePanel.this.toolkit, DevicePanel.this.device);
-				packageDialog.setSize(400, 300);
-				packageDialog.setVisible(true);
-			}
-		});
+		JButton buttonLock = new JButton("Lock");
+		JButton buttonUnlock = new JButton("Unlock");
+
+		JButton buttonUp = new JButton("Up");
+		JButton buttonDown = new JButton("Down");
 
 		screenshotPanel = new ScreenshotPanel(toolkit, device);
 		screenshotPanel.setBorder(BorderFactory
@@ -90,7 +86,7 @@ public class DevicePanel extends JPanel
 
 		c.anchor = GridBagConstraints.WEST;
 		c.weightx = 1.0;
-		c.gridwidth = 2;
+		c.gridwidth = 6;
 		c.gridheight = 1;
 		add(labelTitle, c);
 
@@ -101,12 +97,63 @@ public class DevicePanel extends JPanel
 		c.gridy++;
 		c.gridx = 0;
 		add(dropApk, c);
+
+		c.anchor = GridBagConstraints.NORTHWEST;
 		c.gridheight = 1;
-		c.gridx = 1;
+		c.gridx++;
 		c.insets = new Insets(0, 2, 0, 2);
 		add(buttonListPackages, c);
+		c.gridx++;
+		add(buttonLock, c);
+		c.gridx++;
+		add(buttonUnlock, c);
+		c.anchor = GridBagConstraints.NORTHEAST;
+		c.weightx = 1.0;
+		c.gridx++;
+		add(buttonUp, c);
+		c.weightx = 0.0;
+		c.gridx++;
+		add(buttonDown, c);
+
+		c.anchor = GridBagConstraints.NORTHWEST;
+		c.gridx = 1;
+		c.gridwidth = 5;
 		c.gridy++;
 		add(screenshotPanel, c);
+
+		buttonListPackages.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				PackageDialog packageDialog = new PackageDialog(
+						DevicePanel.this.toolkit, DevicePanel.this.device);
+				packageDialog.setSize(400, 300);
+				packageDialog.setVisible(true);
+			}
+		});
+
+		buttonLock.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				DevicePanel.this.toolkit.uninstallFromDevice(
+						DevicePanel.this.device, new App(
+								"de.topobyte.apps.freemium.unlock.citymaps"));
+			}
+		});
+
+		buttonUnlock.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				String filePath = "/home/z/git/unlock-city-maps/project/bin/UnlockCityMaps.apk";
+				DevicePanel.this.toolkit.uploadToDevice(
+						DevicePanel.this.device, new File(filePath));
+			}
+		});
 	}
 
 	public void update(IDevice device, int changeMask)

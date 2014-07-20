@@ -101,6 +101,13 @@ public class Toolkit
 		reallyUploadToDevice(device, toUpload);
 	}
 
+	public void uploadToDevice(IDevice device, File file)
+	{
+		List<File> files = new ArrayList<File>();
+		files.add(file);
+		uploadToDevice(device, files);
+	}
+
 	private void reallyUploadToDevice(final IDevice device,
 			final List<File> files)
 	{
@@ -152,17 +159,22 @@ public class Toolkit
 	public void uninstallFromDevice(IDevice device, List<App> apps)
 	{
 		for (App app : apps) {
-			message("Uninstalling: " + app.getPackageName());
-			try {
-				String result = device.uninstallPackage(app.getPackageName());
-				if (result == null) {
-					message("Success");
-				} else {
-					message(result);
-				}
-			} catch (InstallException e) {
-				message("Error while uninstalling: " + e.getMessage());
+			uninstallFromDevice(device, app);
+		}
+	}
+
+	public void uninstallFromDevice(IDevice device, App app)
+	{
+		message("Uninstalling: " + app.getPackageName());
+		try {
+			String result = device.uninstallPackage(app.getPackageName());
+			if (result == null) {
+				message("Success");
+			} else {
+				message(result);
 			}
+		} catch (InstallException e) {
+			message("Error while uninstalling: " + e.getMessage());
 		}
 	}
 
