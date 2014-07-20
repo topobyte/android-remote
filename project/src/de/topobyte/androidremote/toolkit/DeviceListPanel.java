@@ -41,6 +41,9 @@ public class DeviceListPanel extends JPanel implements IDeviceChangeListener
 	private Map<IDevice, DevicePanel> deviceToPanel = new HashMap<IDevice, DevicePanel>();
 	private List<DevicePanel> devicePanels = new ArrayList<DevicePanel>();
 
+	private Map<DevicePanel, Integer> panelToY = new HashMap<DevicePanel, Integer>();
+	private Map<Integer, DevicePanel> yToPanel = new HashMap<Integer, DevicePanel>();
+
 	private GridBagConstraints c;
 	private int yCounter = 0;
 
@@ -85,6 +88,8 @@ public class DeviceListPanel extends JPanel implements IDeviceChangeListener
 		c.gridy = yCounter++;
 		c.weighty = 0.0;
 		add(devicePanel, c);
+		panelToY.put(devicePanel, c.gridy);
+		yToPanel.put(c.gridy, devicePanel);
 
 		c.gridy = yCounter++;
 		c.weighty = 1.0;
@@ -134,5 +139,51 @@ public class DeviceListPanel extends JPanel implements IDeviceChangeListener
 			return;
 		}
 		devicePanel.update(device, changeMask);
+	}
+
+	public void moveUp(DevicePanel panel)
+	{
+		int index = devicePanels.indexOf(panel);
+		if (index == 0 || devicePanels.size() < 2) {
+			return;
+		}
+		DevicePanel panel2 = devicePanels.get(index - 1);
+		swap(panel, panel2, index, index - 1);
+	}
+
+	public void moveDown(DevicePanel panel)
+	{
+		int index = devicePanels.indexOf(panel);
+		if (index >= devicePanels.size() - 1) {
+			return;
+		}
+		DevicePanel panel2 = devicePanels.get(index + 1);
+		swap(panel, panel2, index, index + 1);
+	}
+
+	private void swap(DevicePanel panel, DevicePanel panel2, int index,
+			int index2)
+	{
+		int y = panelToY.get(panel);
+		int y2 = panelToY.get(panel2);
+		remove(panel);
+		remove(panel2);
+
+		c.weighty = 0.0;
+
+		c.gridy = y2;
+		add(panel, c);
+		panelToY.put(panel, c.gridy);
+		yToPanel.put(c.gridy, panel);
+
+		c.gridy = y;
+		add(panel2, c);
+		panelToY.put(panel2, c.gridy);
+		yToPanel.put(c.gridy, panel2);
+
+		devicePanels.set(index, panel2);
+		devicePanels.set(index2, panel);
+
+		revalidate();
 	}
 }

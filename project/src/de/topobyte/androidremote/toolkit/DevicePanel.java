@@ -154,6 +154,26 @@ public class DevicePanel extends JPanel
 						DevicePanel.this.device, new File(filePath));
 			}
 		});
+
+		buttonUp.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				DevicePanel.this.toolkit.getToolkitFrame().getDeviceListPanel()
+						.moveUp(DevicePanel.this);
+			}
+		});
+
+		buttonDown.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				DevicePanel.this.toolkit.getToolkitFrame().getDeviceListPanel()
+						.moveDown(DevicePanel.this);
+			}
+		});
 	}
 
 	public void update(IDevice device, int changeMask)

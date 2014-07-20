@@ -82,6 +82,11 @@ public class Toolkit
 		return deviceList;
 	}
 
+	public ToolkitFrame getToolkitFrame()
+	{
+		return frame;
+	}
+
 	public void uploadToDevice(IDevice device, List<File> files)
 	{
 		List<File> toUpload = new ArrayList<File>();

@@ -58,6 +58,11 @@ public class ToolkitFrame extends JFrame
 		tabs.add("Output", debugOutputPanel);
 	}
 
+	public DeviceListPanel getDeviceListPanel()
+	{
+		return deviceListPanel;
+	}
+
 	public DebugOutputPanel getDebugOutputPanel()
 	{
 		return debugOutputPanel;
