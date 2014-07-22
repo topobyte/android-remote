@@ -18,6 +18,8 @@
 package de.topobyte.androidremote.toolkit;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,14 @@ public class AppsTableModel extends AbstractTableModel
 				selection.put(app, false);
 			}
 		}
+		Collections.sort(apps, new Comparator<App>() {
+
+			@Override
+			public int compare(App o1, App o2)
+			{
+				return o1.getPackageName().compareTo(o2.getPackageName());
+			}
+		});
 		fireTableDataChanged();
 	}
 
