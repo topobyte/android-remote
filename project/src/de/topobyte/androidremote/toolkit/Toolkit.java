@@ -70,10 +70,11 @@ public class Toolkit
 
 	private String separator = System.getProperty("line.separator");
 
-	private void message(String message)
+	private void message(IDevice device, String message)
 	{
-		System.out.println(message);
-		frame.getDebugOutputPanel().push(message);
+		String realMessage = "[" + device.getName() + "] " + message;
+		System.out.println(realMessage);
+		frame.getDebugOutputPanel().push(realMessage);
 		frame.getDebugOutputPanel().push(separator);
 	}
 
@@ -124,12 +125,13 @@ public class Toolkit
 				for (File file : files) {
 					upload(file);
 				}
-				message("Finished uploading files");
+				message(device, "Finished uploading files");
 			}
 
 			private void upload(File file)
 			{
-				message("Uploading file: '" + file.getAbsolutePath() + "'");
+				message(device, "Uploading file: '" + file.getAbsolutePath()
+						+ "'");
 				File tmpFile = null;
 				try {
 					tmpFile = File.createTempFile("androidtoolkit", ".apk");
@@ -140,16 +142,17 @@ public class Toolkit
 					String result = device.installPackage(
 							tmpFile.getAbsolutePath(), true);
 					if (result == null) {
-						message("Success");
+						message(device, "Success");
 					} else {
-						message(result);
+						message(device, result);
 					}
 				} catch (IOException e) {
-					message("Error while copying APK to temporary location: "
-							+ e.getMessage());
+					message(device,
+							"Error while copying APK to temporary location: "
+									+ e.getMessage());
 					e.printStackTrace();
 				} catch (InstallException e) {
-					message("Error while installing: " + e.getMessage());
+					message(device, "Error while installing: " + e.getMessage());
 				} finally {
 					if (tmpFile != null) {
 						tmpFile.delete();
@@ -170,16 +173,16 @@ public class Toolkit
 
 	public void uninstallFromDevice(IDevice device, App app)
 	{
-		message("Uninstalling: " + app.getPackageName());
+		message(device, "Uninstalling: " + app.getPackageName());
 		try {
 			String result = device.uninstallPackage(app.getPackageName());
 			if (result == null) {
-				message("Success");
+				message(device, "Success");
 			} else {
-				message(result);
+				message(device, result);
 			}
 		} catch (InstallException e) {
-			message("Error while uninstalling: " + e.getMessage());
+			message(device, "Error while uninstalling: " + e.getMessage());
 		}
 	}
 
@@ -202,16 +205,16 @@ public class Toolkit
 		if (!dir.exists()) {
 			boolean success = dir.mkdirs();
 			if (!success) {
-				message("Unable to create directory");
+				message(device, "Unable to create directory");
 				return;
 			}
 		}
 		if (!dir.exists()) {
-			message("Unable to create directory");
+			message(device, "Unable to create directory");
 			return;
 		}
 		if (!dir.canWrite()) {
-			message("Unable to write to directory");
+			message(device, "Unable to write to directory");
 			return;
 		}
 
@@ -220,7 +223,7 @@ public class Toolkit
 			varies = !String.format(pattern, 1).equals(
 					String.format(pattern, 2));
 		} catch (Exception e) {
-			message("Error processing the filename pattern");
+			message(device, "Error processing the filename pattern");
 			return;
 		}
 		File file = null;
@@ -237,18 +240,20 @@ public class Toolkit
 			i++;
 		}
 		if (file.exists()) {
-			message("File already exists");
+			message(device, "File already exists");
 			return;
 		}
 
 		try {
-			message("Capturing screenshot to: '" + file.getAbsolutePath() + "'");
+			message(device,
+					"Capturing screenshot to: '" + file.getAbsolutePath() + "'");
 			BufferedImage image = Util.getScreenshot(device);
 			ImageIO.write(image, "PNG", file);
-			message("Success");
+			message(device, "Success");
 		} catch (Exception e) {
-			message("Unable to capture screenshot");
-			message(e.getClass().getSimpleName() + ": " + e.getMessage());
+			message(device, "Unable to capture screenshot");
+			message(device,
+					e.getClass().getSimpleName() + ": " + e.getMessage());
 		}
 	}
 }
