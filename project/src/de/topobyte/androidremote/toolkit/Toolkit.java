@@ -186,6 +186,25 @@ public class Toolkit
 		}
 	}
 
+	public void clearOnDevice(IDevice device, List<App> apps)
+	{
+		for (App app : apps) {
+			clearOnDevice(device, app);
+		}
+	}
+
+	private void clearOnDevice(IDevice device, App app)
+	{
+		message(device, "Clearing data: " + app.getPackageName());
+		try {
+			String cmd = "pm clear " + app.getPackageName();
+			String output = Util.executeShellCommand(device, cmd);
+			message(device, output);
+		} catch (Exception e) {
+			message(device, "Error while clearing data: " + e.getMessage());
+		}
+	}
+
 	public String getDefaultScreenshotPath()
 	{
 		return "/home/z/git/google-play/stadtplan-ng/screenshots";

@@ -69,16 +69,22 @@ public class PackageDialog extends JDialog
 
 		GridBagConstraints c = new GridBagConstraints();
 		JButton buttonUninstall = new JButton("uninstall");
+		JButton buttonClear = new JButton("clear data");
 
 		c.gridx = 0;
 		c.gridy = 0;
-		c.weightx = 1.0;
+		c.weightx = 0.0;
 		c.anchor = GridBagConstraints.WEST;
 		main.add(buttonUninstall, c);
 
+		c.gridx++;
+		main.add(buttonClear, c);
+
+		c.gridx = 0;
 		c.gridy = 1;
-		c.gridwidth = 1;
+		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1.0;
 		c.weighty = 1.0;
 		main.add(jsp, c);
 
@@ -90,12 +96,27 @@ public class PackageDialog extends JDialog
 				uninstallSelected();
 			}
 		});
+
+		buttonClear.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				clearSelected();
+			}
+		});
 	}
 
 	protected void uninstallSelected()
 	{
 		List<App> apps = tableModel.getSelectedApps();
 		toolkit.uninstallFromDevice(device, apps);
+	}
+
+	protected void clearSelected()
+	{
+		List<App> apps = tableModel.getSelectedApps();
+		toolkit.clearOnDevice(device, apps);
 	}
 
 	private void updateList()
