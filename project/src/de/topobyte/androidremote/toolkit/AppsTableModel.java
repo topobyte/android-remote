@@ -33,15 +33,28 @@ public class AppsTableModel extends AbstractTableModel
 
 	private static final long serialVersionUID = 1L;
 
+	private String filter = null;
+
+	private String[] lines;
+	private Pattern pattern = Pattern.compile("package:(.*)");
+
 	private List<App> apps = new ArrayList<App>();
 	private Map<App, Boolean> selection = new HashMap<App, Boolean>();
 
 	public void update(String listOfPackages)
 	{
-		Pattern pattern = Pattern.compile("package:(.*)");
-		String[] lines = listOfPackages.split("\n");
+		lines = listOfPackages.split("\n");
+		update();
+	}
+
+	private void update()
+	{
+		if (lines == null) {
+			return;
+		}
+		apps.clear();
 		for (String line : lines) {
-			if (!line.contains("topobyte")) {
+			if (filter != null && !line.contains(filter)) {
 				continue;
 			}
 			Matcher matcher = pattern.matcher(line.trim());
@@ -144,6 +157,12 @@ public class AppsTableModel extends AbstractTableModel
 			}
 		}
 		return results;
+	}
+
+	public void setFilter(String filter)
+	{
+		this.filter = filter;
+		update();
 	}
 
 }

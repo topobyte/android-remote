@@ -29,6 +29,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
 
 import com.android.ddmlib.AdbCommandRejectedException;
 import com.android.ddmlib.IDevice;
@@ -36,6 +38,7 @@ import com.android.ddmlib.ShellCommandUnresponsiveException;
 import com.android.ddmlib.TimeoutException;
 
 import de.topobyte.androidremote.Util;
+import de.topobyte.swing.DocumentAdapter;
 
 public class PackageDialog extends JDialog
 {
@@ -45,6 +48,7 @@ public class PackageDialog extends JDialog
 	private Toolkit toolkit;
 	private IDevice device;
 
+	private JTextField inputFilter;
 	private AppsTableModel tableModel;
 	private JTable table;
 
@@ -55,12 +59,26 @@ public class PackageDialog extends JDialog
 
 		setTitle("Packages for: " + device.getName());
 
+		inputFilter = new JTextField();
+		inputFilter.setText("topobyte");
+
 		tableModel = new AppsTableModel();
+		tableModel.setFilter(inputFilter.getText());
 		table = new JTable(tableModel);
 		JScrollPane jsp = new JScrollPane(table);
 
 		table.getColumnModel().getColumn(0).setPreferredWidth(800);
 		table.getColumnModel().getColumn(1).setPreferredWidth(50);
+
+		inputFilter.getDocument().addDocumentListener(new DocumentAdapter() {
+
+			@Override
+			public void update(DocumentEvent event)
+			{
+				String filter = inputFilter.getText();
+				tableModel.setFilter(filter);
+			}
+		});
 
 		updateList();
 
@@ -85,6 +103,9 @@ public class PackageDialog extends JDialog
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1.0;
+		main.add(inputFilter, c);
+
+		c.gridy = 2;
 		c.weighty = 1.0;
 		main.add(jsp, c);
 
