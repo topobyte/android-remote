@@ -20,6 +20,7 @@ repositories {
 }
 
 dependencies {
+    compile 'de.topobyte:swing-utils:0.0.7'
     compile fileTree(dir: 'lib', include: ['*.jar'])
 }
 

@@ -38,7 +38,7 @@ import com.android.ddmlib.ShellCommandUnresponsiveException;
 import com.android.ddmlib.TimeoutException;
 
 import de.topobyte.androidremote.Util;
-import de.topobyte.swing.DocumentAdapter;
+import de.topobyte.swing.util.DocumentAdapter;
 
 public class PackageDialog extends JDialog
 {
