@@ -1,18 +1,7 @@
 #!/bin/bash
 
-if [ "$#" -lt "0" ]; then
-	echo "usage: toolkit"
-	exit 1
-fi
+DIR=$(dirname $0)
+CMD="$DIR/android-remote.sh"
+CLASS="de.topobyte.androidremote.toolkit.Toolkit"
 
-# find java claspath
-DIR=`dirname $0`
-#echo "we are operating from: $DIR"
-CLASSPATH=.
-CLASSPATH+=:$DIR/../lib/*
-CLASSPATH+=:$DIR/../bin/
-CLASSPATH+=:$DIR/../
-#echo "CLASSPATH=$CLASSPATH"
-
-CMD="java -cp $CLASSPATH de.topobyte.androidremote.toolkit.Toolkit"
-exec $CMD "$@"
+exec "$CMD" "$CLASS" "$@"
