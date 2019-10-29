@@ -149,7 +149,7 @@ public class DevicePanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String filePath = "/home/z/git/apks/unlock-city-maps/v2/UnlockCityMaps.apk";
+				String filePath = "/home/z/git/apks/unlock-city-maps/v3/UnlockCityMaps.apk";
 				DevicePanel.this.toolkit.uploadToDevice(
 						DevicePanel.this.device, new File(filePath));
 			}
