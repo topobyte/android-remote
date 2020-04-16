@@ -90,7 +90,7 @@ public class Toolkit
 
 	public void uploadToDevice(IDevice device, List<File> files)
 	{
-		List<File> toUpload = new ArrayList<File>();
+		List<File> toUpload = new ArrayList<>();
 		for (File file : files) {
 			if (!file.getName().endsWith(".apk")) {
 				System.out.println(
@@ -109,7 +109,7 @@ public class Toolkit
 
 	public void uploadToDevice(IDevice device, File file)
 	{
-		List<File> files = new ArrayList<File>();
+		List<File> files = new ArrayList<>();
 		files.add(file);
 		uploadToDevice(device, files);
 	}

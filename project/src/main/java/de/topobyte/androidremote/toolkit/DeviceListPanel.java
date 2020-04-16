@@ -38,11 +38,11 @@ public class DeviceListPanel extends JPanel implements IDeviceChangeListener
 
 	private Toolkit toolkit;
 
-	private Map<IDevice, DevicePanel> deviceToPanel = new HashMap<IDevice, DevicePanel>();
-	private List<DevicePanel> devicePanels = new ArrayList<DevicePanel>();
+	private Map<IDevice, DevicePanel> deviceToPanel = new HashMap<>();
+	private List<DevicePanel> devicePanels = new ArrayList<>();
 
-	private Map<DevicePanel, Integer> panelToY = new HashMap<DevicePanel, Integer>();
-	private Map<Integer, DevicePanel> yToPanel = new HashMap<Integer, DevicePanel>();
+	private Map<DevicePanel, Integer> panelToY = new HashMap<>();
+	private Map<Integer, DevicePanel> yToPanel = new HashMap<>();
 
 	private GridBagConstraints c;
 	private int yCounter = 0;

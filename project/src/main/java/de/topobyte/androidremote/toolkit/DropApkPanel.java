@@ -147,7 +147,7 @@ public class DropApkPanel extends JPanel
 	@SuppressWarnings("rawtypes")
 	public void importFiles(List data)
 	{
-		List<File> files = new ArrayList<File>();
+		List<File> files = new ArrayList<>();
 
 		for (Object item : data) {
 			File file = (File) item;

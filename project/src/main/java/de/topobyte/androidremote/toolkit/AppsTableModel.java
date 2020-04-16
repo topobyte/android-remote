@@ -38,8 +38,8 @@ public class AppsTableModel extends AbstractTableModel
 	private String[] lines;
 	private Pattern pattern = Pattern.compile("package:(.*)");
 
-	private List<App> apps = new ArrayList<App>();
-	private Map<App, Boolean> selection = new HashMap<App, Boolean>();
+	private List<App> apps = new ArrayList<>();
+	private Map<App, Boolean> selection = new HashMap<>();
 
 	public void update(String listOfPackages)
 	{
@@ -149,7 +149,7 @@ public class AppsTableModel extends AbstractTableModel
 
 	public List<App> getSelectedApps()
 	{
-		List<App> results = new ArrayList<App>();
+		List<App> results = new ArrayList<>();
 		for (App app : apps) {
 			Boolean value = selection.get(app);
 			if (value != null && value) {

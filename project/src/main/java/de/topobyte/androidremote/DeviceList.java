@@ -27,7 +27,7 @@ import com.android.ddmlib.IDevice;
 public class DeviceList implements IDeviceChangeListener
 {
 
-	private List<IDevice> devices = new ArrayList<IDevice>();
+	private List<IDevice> devices = new ArrayList<>();
 
 	@Override
 	public void deviceConnected(IDevice device)
