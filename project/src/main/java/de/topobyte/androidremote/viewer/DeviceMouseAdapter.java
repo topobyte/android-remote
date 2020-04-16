@@ -110,8 +110,8 @@ public class DeviceMouseAdapter extends MouseAdapter
 			try {
 				Util.sendTap(deviceX, deviceY);
 			} catch (IOException e) {
-				System.err.println("Error while sending mouse press: "
-						+ e.getMessage());
+				System.err.println(
+						"Error while sending mouse press: " + e.getMessage());
 			}
 		}
 	}
@@ -125,8 +125,8 @@ public class DeviceMouseAdapter extends MouseAdapter
 			try {
 				Util.sendSwipe(pressX, pressY, deviceX, deviceY, duration);
 			} catch (IOException e) {
-				System.err.println("Error while sending mouse release: "
-						+ e.getMessage());
+				System.err.println(
+						"Error while sending mouse release: " + e.getMessage());
 			}
 		}
 	}

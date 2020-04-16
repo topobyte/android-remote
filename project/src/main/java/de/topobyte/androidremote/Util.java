@@ -50,18 +50,13 @@ public class Util
 			throws TimeoutException, AdbCommandRejectedException, IOException
 	{
 		RawImage rawImage = device.getScreenshot();
-		System.out.println("bpp: "
-				+ rawImage.bpp
-				+ ", size: "
-				+ rawImage.width
-				+ " x "
-				+ rawImage.height
-				+ ", "
+		System.out.println("bpp: " + rawImage.bpp + ", size: " + rawImage.width
+				+ " x " + rawImage.height + ", "
 				+ String.format("%X %X %X", rawImage.getRedMask(),
 						rawImage.getGreenMask(), rawImage.getBlueMask()));
 
-		BufferedImage image = new BufferedImage(rawImage.width,
-				rawImage.height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage image = new BufferedImage(rawImage.width, rawImage.height,
+				BufferedImage.TYPE_INT_ARGB);
 
 		long t1 = System.currentTimeMillis();
 		WritableRaster raster = image.getRaster();

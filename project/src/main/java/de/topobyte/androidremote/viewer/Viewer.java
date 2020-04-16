@@ -37,8 +37,8 @@ public class Viewer
 	public static void main(String[] args)
 	{
 		if (!Util.haveAdbInPath()) {
-			System.err
-					.println("Unable to execute adb. Have you set up the path correctly?");
+			System.err.println(
+					"Unable to execute adb. Have you set up the path correctly?");
 			System.exit(1);
 		}
 
@@ -51,8 +51,8 @@ public class Viewer
 					scale = value;
 				}
 			} catch (NumberFormatException e) {
-				System.out.println("usage: " + Viewer.class.getSimpleName()
-						+ " [scale]");
+				System.out.println(
+						"usage: " + Viewer.class.getSimpleName() + " [scale]");
 				System.exit(1);
 			}
 		}

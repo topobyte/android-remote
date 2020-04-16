@@ -104,25 +104,25 @@ public class Toolbar extends JToolBar
 		String name = device.getName();
 		if (name.startsWith("htc-nexus_one-")) {
 			try {
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event5 1 116 1");
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event5 0 0 0");
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event5 1 116 0");
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event5 0 0 0");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event5 1 116 1");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event5 0 0 0");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event5 1 116 0");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event5 0 0 0");
 			} catch (IOException e) {
-				System.err.println("Error while sending event: "
-						+ e.getMessage());
+				System.err.println(
+						"Error while sending event: " + e.getMessage());
 			}
 		} else if (name.startsWith("lge-nexus_4-")
 				|| name.startsWith("lge-nexus_5-")) {
 			try {
 				Util.sendKeyEvent(26);
 			} catch (IOException e) {
-				System.err.println("Error while sending event: "
-						+ e.getMessage());
+				System.err.println(
+						"Error while sending event: " + e.getMessage());
 			}
 		}
 	}
@@ -132,38 +132,38 @@ public class Toolbar extends JToolBar
 		String name = device.getName();
 		if (name.startsWith("htc-nexus_one-")) {
 			try {
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event5 1 116 1");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event5 1 116 1");
 				try {
 					Thread.sleep(1500);
 				} catch (InterruptedException e) {
 					// ignore
 				}
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event5 1 116 0");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event5 1 116 0");
 			} catch (IOException e) {
-				System.err.println("Error while sending event: "
-						+ e.getMessage());
+				System.err.println(
+						"Error while sending event: " + e.getMessage());
 			}
 		} else if (name.startsWith("lge-nexus_4-")
 				|| name.startsWith("lge-nexus_5-")) {
 			try {
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event0 1 116 1");
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event0 0 0 0");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event0 1 116 1");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event0 0 0 0");
 				try {
 					Thread.sleep(1500);
 				} catch (InterruptedException e) {
 					// ignore
 				}
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event0 1 116 0");
-				Runtime.getRuntime().exec(
-						"adb shell sendevent /dev/input/event0 0 0 0");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event0 1 116 0");
+				Runtime.getRuntime()
+						.exec("adb shell sendevent /dev/input/event0 0 0 0");
 			} catch (IOException e) {
-				System.err.println("Error while sending event: "
-						+ e.getMessage());
+				System.err.println(
+						"Error while sending event: " + e.getMessage());
 			}
 		}
 	}

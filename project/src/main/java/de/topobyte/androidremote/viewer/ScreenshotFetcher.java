@@ -54,14 +54,14 @@ public abstract class ScreenshotFetcher implements Runnable
 				screenshotAvailabe(image);
 				success = true;
 			} catch (TimeoutException e) {
-				System.err.println("Error while fetching screenshot: "
-						+ e.getMessage());
+				System.err.println(
+						"Error while fetching screenshot: " + e.getMessage());
 			} catch (AdbCommandRejectedException e) {
-				System.err.println("Error while fetching screenshot: "
-						+ e.getMessage());
+				System.err.println(
+						"Error while fetching screenshot: " + e.getMessage());
 			} catch (IOException e) {
-				System.err.println("Error while fetching screenshot: "
-						+ e.getMessage());
+				System.err.println(
+						"Error while fetching screenshot: " + e.getMessage());
 			}
 			if (!success) {
 				try {

@@ -63,8 +63,8 @@ public class DeviceKeyAdapter extends KeyAdapter
 			try {
 				Util.sendText("" + keyChar);
 			} catch (IOException e) {
-				System.err.println("Error while sending text: "
-						+ e.getMessage());
+				System.err
+						.println("Error while sending text: " + e.getMessage());
 			}
 		}
 	}
@@ -74,8 +74,8 @@ public class DeviceKeyAdapter extends KeyAdapter
 		try {
 			Util.sendKeyEvent(code);
 		} catch (IOException e) {
-			System.err.println("Error while sending key event: "
-					+ e.getMessage());
+			System.err.println(
+					"Error while sending key event: " + e.getMessage());
 		}
 	}
 

@@ -42,8 +42,8 @@ public class Toolkit
 	public static void main(String[] args)
 	{
 		if (!Util.haveAdbInPath()) {
-			System.err
-					.println("Unable to execute adb. Have you set up the path correctly?");
+			System.err.println(
+					"Unable to execute adb. Have you set up the path correctly?");
 			// System.exit(1);
 		}
 
@@ -93,13 +93,13 @@ public class Toolkit
 		List<File> toUpload = new ArrayList<File>();
 		for (File file : files) {
 			if (!file.getName().endsWith(".apk")) {
-				System.out.println("ignoring non-APK: '"
-						+ file.getAbsolutePath() + "'");
+				System.out.println(
+						"ignoring non-APK: '" + file.getAbsolutePath() + "'");
 				continue;
 			}
 			if (!file.isFile()) {
-				System.out.println("ignoring directory: '"
-						+ file.getAbsolutePath() + "'");
+				System.out.println(
+						"ignoring directory: '" + file.getAbsolutePath() + "'");
 				continue;
 			}
 			toUpload.add(file);
@@ -130,8 +130,8 @@ public class Toolkit
 
 			private void upload(File file)
 			{
-				message(device, "Uploading file: '" + file.getAbsolutePath()
-						+ "'");
+				message(device,
+						"Uploading file: '" + file.getAbsolutePath() + "'");
 				File tmpFile = null;
 				try {
 					tmpFile = File.createTempFile("androidtoolkit", ".apk");
@@ -147,7 +147,8 @@ public class Toolkit
 									+ e.getMessage());
 					e.printStackTrace();
 				} catch (InstallException e) {
-					message(device, "Error while installing: " + e.getMessage());
+					message(device,
+							"Error while installing: " + e.getMessage());
 				} finally {
 					if (tmpFile != null) {
 						tmpFile.delete();
@@ -234,8 +235,8 @@ public class Toolkit
 
 		boolean varies = false;
 		try {
-			varies = !String.format(pattern, 1).equals(
-					String.format(pattern, 2));
+			varies = !String.format(pattern, 1)
+					.equals(String.format(pattern, 2));
 		} catch (Exception e) {
 			message(device, "Error processing the filename pattern");
 			return;
@@ -259,8 +260,8 @@ public class Toolkit
 		}
 
 		try {
-			message(device,
-					"Capturing screenshot to: '" + file.getAbsolutePath() + "'");
+			message(device, "Capturing screenshot to: '"
+					+ file.getAbsolutePath() + "'");
 			BufferedImage image = Util.getScreenshot(device);
 			ImageIO.write(image, "PNG", file);
 			message(device, "Success");

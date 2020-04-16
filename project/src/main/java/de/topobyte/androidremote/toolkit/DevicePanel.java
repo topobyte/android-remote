@@ -73,12 +73,12 @@ public class DevicePanel extends JPanel
 		JButton buttonDown = new JButton("Down");
 
 		screenshotPanel = new ScreenshotPanel(toolkit, device);
-		screenshotPanel.setBorder(BorderFactory
-				.createTitledBorder("Screenshot"));
-		screenshotPanel.getPathScreenshots().setText(
-				toolkit.getDefaultScreenshotPath());
-		screenshotPanel.getPatternFilenames().setText(
-				toolkit.getDefaultScreenshotPattern(device));
+		screenshotPanel
+				.setBorder(BorderFactory.createTitledBorder("Screenshot"));
+		screenshotPanel.getPathScreenshots()
+				.setText(toolkit.getDefaultScreenshotPath());
+		screenshotPanel.getPatternFilenames()
+				.setText(toolkit.getDefaultScreenshotPattern(device));
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -139,8 +139,8 @@ public class DevicePanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				DevicePanel.this.toolkit.uninstallFromDevice(
-						DevicePanel.this.device, new App(
-								"de.topobyte.apps.freemium.unlock.citymaps"));
+						DevicePanel.this.device,
+						new App("de.topobyte.apps.freemium.unlock.citymaps"));
 			}
 		});
 
@@ -150,8 +150,8 @@ public class DevicePanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				String filePath = "/home/z/git/apks/unlock-city-maps/v3/UnlockCityMaps.apk";
-				DevicePanel.this.toolkit.uploadToDevice(
-						DevicePanel.this.device, new File(filePath));
+				DevicePanel.this.toolkit.uploadToDevice(DevicePanel.this.device,
+						new File(filePath));
 			}
 		});
 
@@ -192,8 +192,8 @@ public class DevicePanel extends JPanel
 
 	private void updateScreenshotPanel()
 	{
-		screenshotPanel.getPatternFilenames().setText(
-				toolkit.getDefaultScreenshotPattern(device));
+		screenshotPanel.getPatternFilenames()
+				.setText(toolkit.getDefaultScreenshotPattern(device));
 	}
 
 }
