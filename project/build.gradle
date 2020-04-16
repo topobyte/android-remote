@@ -17,11 +17,14 @@ repositories {
         url 'http://mvn.topobyte.de'
     }
     mavenCentral()
+    maven {
+        url 'https://dl.google.com/dl/android/maven2'
+    }
 }
 
 dependencies {
     compile 'de.topobyte:swing-utils:0.0.7'
-    compile fileTree(dir: 'lib', include: ['*.jar'])
+    compile 'com.android.tools.ddms:ddmlib:26.6.2'
 }
 
 task copyJars(type: Copy) {

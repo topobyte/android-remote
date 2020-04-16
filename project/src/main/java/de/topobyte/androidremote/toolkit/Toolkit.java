@@ -139,13 +139,8 @@ public class Toolkit
 					Path target = Paths.get(tmpFile.getAbsolutePath());
 					Files.copy(source, target,
 							StandardCopyOption.REPLACE_EXISTING);
-					String result = device.installPackage(
-							tmpFile.getAbsolutePath(), true);
-					if (result == null) {
-						message(device, "Success");
-					} else {
-						message(device, result);
-					}
+					device.installPackage(tmpFile.getAbsolutePath(), true);
+					message(device, "Success");
 				} catch (IOException e) {
 					message(device,
 							"Error while copying APK to temporary location: "
