@@ -128,7 +128,7 @@ public class DeviceListPanel extends JPanel implements IDeviceChangeListener
 		}
 		remove(devicePanel);
 		devicePanels.remove(devicePanel);
-		deviceToPanel.remove(devicePanel);
+		deviceToPanel.remove(device);
 		revalidate();
 	}
 
