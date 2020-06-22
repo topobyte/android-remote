@@ -29,6 +29,7 @@ import com.android.ddmlib.TimeoutException;
 
 public class Util
 {
+
 	private static String CMD_SCREENCAP = "adb shell screencap -p";
 	private static String CMD_TAP = "adb shell input tap %d %d";
 	private static String CMD_SWIPE = "adb shell input swipe %d %d %d %d";
@@ -116,4 +117,5 @@ public class Util
 		device.executeShellCommand(command, gatherer);
 		return gatherer.getOutput();
 	}
+
 }

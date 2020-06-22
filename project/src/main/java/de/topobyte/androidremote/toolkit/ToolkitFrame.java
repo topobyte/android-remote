@@ -67,4 +67,5 @@ public class ToolkitFrame extends JFrame
 	{
 		return debugOutputPanel;
 	}
+
 }

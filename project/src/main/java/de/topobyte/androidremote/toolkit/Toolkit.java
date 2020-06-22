@@ -39,6 +39,7 @@ import de.topobyte.androidremote.Util;
 
 public class Toolkit
 {
+
 	public static void main(String[] args)
 	{
 		if (!Util.haveAdbInPath()) {
@@ -271,4 +272,5 @@ public class Toolkit
 					e.getClass().getSimpleName() + ": " + e.getMessage());
 		}
 	}
+
 }

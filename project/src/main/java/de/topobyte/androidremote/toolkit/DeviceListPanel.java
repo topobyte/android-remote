@@ -34,6 +34,7 @@ import de.topobyte.androidremote.DeviceList;
 
 public class DeviceListPanel extends JPanel implements IDeviceChangeListener
 {
+
 	private static final long serialVersionUID = 1L;
 
 	private Toolkit toolkit;
@@ -186,4 +187,5 @@ public class DeviceListPanel extends JPanel implements IDeviceChangeListener
 
 		revalidate();
 	}
+
 }
