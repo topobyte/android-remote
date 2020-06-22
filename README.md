@@ -1,6 +1,6 @@
 # Android Remote Control
 
-A set of UI toolkit to remote control your Android device.
+A set of UI toolkits to remote control your Android device.
 
 ## Setup
 
