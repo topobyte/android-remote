@@ -26,3 +26,8 @@ uninstall applications easily and also clear data of any application to reset it
 to its initial state. Run this to start the toolkit:
 
     ./scripts/toolkit
+
+# License
+
+This project is released under the terms of the GNU General Public
+License. See [GPL.md](GPL.md) for details.
