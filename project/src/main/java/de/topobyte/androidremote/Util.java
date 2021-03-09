@@ -50,16 +50,18 @@ public class Util
 	public static BufferedImage getScreenshot(IDevice device)
 			throws TimeoutException, AdbCommandRejectedException, IOException
 	{
+		long t1 = System.currentTimeMillis();
 		RawImage rawImage = device.getScreenshot();
 		System.out.println("bpp: " + rawImage.bpp + ", size: " + rawImage.width
 				+ " x " + rawImage.height + ", "
 				+ String.format("%X %X %X", rawImage.getRedMask(),
 						rawImage.getGreenMask(), rawImage.getBlueMask()));
 
+		long t2 = System.currentTimeMillis();
+
 		BufferedImage image = new BufferedImage(rawImage.width, rawImage.height,
 				BufferedImage.TYPE_INT_ARGB);
 
-		long t1 = System.currentTimeMillis();
 		WritableRaster raster = image.getRaster();
 		for (int j = 0; j < rawImage.height; j++) {
 			int s = j * rawImage.width * 4;
@@ -72,8 +74,9 @@ public class Util
 				raster.setPixel(i, j, new int[] { r, g, b, a });
 			}
 		}
-		long t2 = System.currentTimeMillis();
-		System.out.println("time: " + (t2 - t1));
+		long t3 = System.currentTimeMillis();
+		System.out.println(
+				String.format("times: get: %d, process: %d", t2 - t1, t3 - t2));
 
 		return image;
 	}
