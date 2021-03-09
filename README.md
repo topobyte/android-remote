@@ -30,4 +30,9 @@ to its initial state. Run this to start the toolkit:
     ./scripts/toolkit
 
 ![Toolkit overview](screenshots/adb-toolkit.png)
+
+Clicking the 'List packages' button opens a dialog that let's you perform
+actions on installed applications on the device in batches. Currently you
+can uninstall them or clear data to reset them to their initial state.
+
 ![Toolkit package list](screenshots/package-list.png)
