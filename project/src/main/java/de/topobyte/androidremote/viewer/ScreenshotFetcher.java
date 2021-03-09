@@ -65,7 +65,7 @@ public abstract class ScreenshotFetcher implements Runnable
 			}
 			if (!success) {
 				try {
-					Thread.sleep(500);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					// ignore
 				}
