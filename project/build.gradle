@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile 'de.topobyte:swing-utils:0.0.7'
+    compile 'de.topobyte:swing-utils:0.0.12'
     compile 'de.topobyte:system-utils:0.0.1'
     compile 'com.android.tools.ddms:ddmlib:26.6.2'
 }
