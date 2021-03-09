@@ -17,6 +17,8 @@ mouse pointer. Run this to start the viewer:
 
     ./scripts/viewer
 
+![Viewer](screenshots/viewer.png)
+
 ## Toolkit
 
 The toolkit is an application that allows you to manage your Android device. You
@@ -27,7 +29,5 @@ to its initial state. Run this to start the toolkit:
 
     ./scripts/toolkit
 
-# License
-
-This project is released under the terms of the GNU General Public
-License. See [GPL.md](GPL.md) for details.
+![Toolkit overview](screenshots/adb-toolkit.png)
+![Toolkit package list](screenshots/package-list.png)
