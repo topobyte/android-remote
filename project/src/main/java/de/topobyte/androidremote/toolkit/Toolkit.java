@@ -36,6 +36,7 @@ import com.android.ddmlib.InstallException;
 
 import de.topobyte.androidremote.DeviceList;
 import de.topobyte.androidremote.Util;
+import de.topobyte.system.utils.SystemPaths;
 
 public class Toolkit
 {
@@ -202,9 +203,9 @@ public class Toolkit
 		}
 	}
 
-	public String getDefaultScreenshotPath()
+	public Path getDefaultScreenshotPath()
 	{
-		return "/home/z/git/google-play/stadtplan-ng/screenshots";
+		return SystemPaths.HOME.resolve("in/device-screenshots");
 	}
 
 	public String getDefaultScreenshotPattern(IDevice device)

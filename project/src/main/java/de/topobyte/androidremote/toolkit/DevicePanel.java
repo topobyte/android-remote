@@ -23,7 +23,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.nio.file.Path;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -32,6 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import com.android.ddmlib.IDevice;
+
+import de.topobyte.system.utils.SystemPaths;
 
 public class DevicePanel extends JPanel
 {
@@ -76,7 +78,7 @@ public class DevicePanel extends JPanel
 		screenshotPanel
 				.setBorder(BorderFactory.createTitledBorder("Screenshot"));
 		screenshotPanel.getPathScreenshots()
-				.setText(toolkit.getDefaultScreenshotPath());
+				.setText(toolkit.getDefaultScreenshotPath().toString());
 		screenshotPanel.getPatternFilenames()
 				.setText(toolkit.getDefaultScreenshotPattern(device));
 
@@ -149,9 +151,10 @@ public class DevicePanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String filePath = "/home/z/git/apks/unlock-city-maps/v3/UnlockCityMaps.apk";
+				Path path = SystemPaths.HOME.resolve(
+						"git/apks/unlock-city-maps/v3/UnlockCityMaps.apk");
 				DevicePanel.this.toolkit.uploadToDevice(DevicePanel.this.device,
-						new File(filePath));
+						path.toFile());
 			}
 		});
 
