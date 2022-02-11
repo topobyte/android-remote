@@ -36,3 +36,10 @@ actions on installed applications on the device in batches. Currently you
 can uninstall them or clear data to reset them to their initial state.
 
 ![Toolkit package list](screenshots/package-list.png)
+
+## TODO
+
+Use `IDevice#getProperties()` to make all properties from the device available
+in a tabular view as a convenient way to do what usually is done via `adb shell getprop`.
+Also get the API level and some other key properties and display them on the device
+panel.
