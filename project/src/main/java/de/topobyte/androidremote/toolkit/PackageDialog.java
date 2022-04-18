@@ -17,6 +17,7 @@
 
 package de.topobyte.androidremote.toolkit;
 
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -52,8 +53,9 @@ public class PackageDialog extends JDialog
 	private AppsTableModel tableModel;
 	private JTable table;
 
-	public PackageDialog(Toolkit toolkit, IDevice device)
+	public PackageDialog(Frame owner, Toolkit toolkit, IDevice device)
 	{
+		super(owner);
 		this.toolkit = toolkit;
 		this.device = device;
 

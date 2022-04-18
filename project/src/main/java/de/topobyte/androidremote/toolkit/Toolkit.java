@@ -17,6 +17,7 @@
 
 package de.topobyte.androidremote.toolkit;
 
+import java.awt.Frame;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +69,11 @@ public class Toolkit
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 600);
 		frame.setVisible(true);
+	}
+
+	public Frame getFrame()
+	{
+		return frame;
 	}
 
 	private String separator = System.getProperty("line.separator");
