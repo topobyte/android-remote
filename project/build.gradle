@@ -1,17 +1,16 @@
 wrapper {
-    gradleVersion = '5.2.1'
+    gradleVersion = '7.4.2'
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'maven'
 
 group = pGroup
 version = pVersion
 
 repositories {
     maven {
-        url 'http://mvn.topobyte.de'
+        url 'https://mvn.topobyte.de'
     }
     mavenCentral()
     maven {
@@ -20,9 +19,9 @@ repositories {
 }
 
 dependencies {
-    compile 'de.topobyte:swing-utils:0.0.12'
-    compile 'de.topobyte:system-utils:0.0.1'
-    compile 'com.android.tools.ddms:ddmlib:26.6.2'
+    implementation 'de.topobyte:swing-utils:0.0.12'
+    implementation 'de.topobyte:system-utils:0.0.1'
+    implementation 'com.android.tools.ddms:ddmlib:26.6.2'
 }
 
 task copyJars(type: Copy) {
@@ -32,7 +31,7 @@ task copyJars(type: Copy) {
 
 task copyDeps(type: Copy) {
     into "$buildDir/lib-run"
-    from configurations.runtime
+    from configurations.runtimeClasspath
 }
 
 task createRuntime(dependsOn: [copyJars, copyDeps]) {
