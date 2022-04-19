@@ -209,6 +209,25 @@ public class Toolkit
 		}
 	}
 
+	public void forceStop(IDevice device, List<App> apps)
+	{
+		for (App app : apps) {
+			forceStop(device, app);
+		}
+	}
+
+	private void forceStop(IDevice device, App app)
+	{
+		message(device, "Force-stopping: " + app.getPackageName());
+		try {
+			String cmd = "am force-stop " + app.getPackageName();
+			String output = Util.executeShellCommand(device, cmd);
+			message(device, output);
+		} catch (Exception e) {
+			message(device, "Error while force stopping: " + e.getMessage());
+		}
+	}
+
 	public Path getDefaultScreenshotPath()
 	{
 		return SystemPaths.HOME.resolve("in/device-screenshots");

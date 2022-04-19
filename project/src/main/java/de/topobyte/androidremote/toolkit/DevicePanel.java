@@ -128,8 +128,9 @@ public class DevicePanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				PackageDialog packageDialog = new PackageDialog(toolkit.getFrame(),
-						DevicePanel.this.toolkit, DevicePanel.this.device);
+				PackageDialog packageDialog = new PackageDialog(
+						toolkit.getFrame(), DevicePanel.this.toolkit,
+						DevicePanel.this.device);
 				packageDialog.setSize(400, 300);
 				packageDialog.setVisible(true);
 			}

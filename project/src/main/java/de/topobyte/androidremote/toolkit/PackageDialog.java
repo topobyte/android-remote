@@ -20,8 +20,6 @@ package de.topobyte.androidremote.toolkit;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -89,6 +87,7 @@ public class PackageDialog extends JDialog
 
 		GridBagConstraints c = new GridBagConstraints();
 		JButton buttonUninstall = new JButton("uninstall");
+		JButton buttonForceClose = new JButton("force close");
 		JButton buttonClear = new JButton("clear data");
 
 		c.gridx = 0;
@@ -98,11 +97,14 @@ public class PackageDialog extends JDialog
 		main.add(buttonUninstall, c);
 
 		c.gridx++;
+		main.add(buttonForceClose, c);
+
+		c.gridx++;
 		main.add(buttonClear, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
-		c.gridwidth = 2;
+		c.gridwidth = 3;
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1.0;
 		main.add(inputFilter, c);
@@ -111,22 +113,16 @@ public class PackageDialog extends JDialog
 		c.weighty = 1.0;
 		main.add(jsp, c);
 
-		buttonUninstall.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				uninstallSelected();
-			}
+		buttonUninstall.addActionListener(e -> {
+			uninstallSelected();
 		});
 
-		buttonClear.addActionListener(new ActionListener() {
+		buttonForceClose.addActionListener(e -> {
+			forceCloseSelected();
+		});
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				clearSelected();
-			}
+		buttonClear.addActionListener(e -> {
+			clearSelected();
 		});
 	}
 
@@ -134,6 +130,12 @@ public class PackageDialog extends JDialog
 	{
 		List<App> apps = tableModel.getSelectedApps();
 		toolkit.uninstallFromDevice(device, apps);
+	}
+
+	protected void forceCloseSelected()
+	{
+		List<App> apps = tableModel.getSelectedApps();
+		toolkit.forceStop(device, apps);
 	}
 
 	protected void clearSelected()
