@@ -17,6 +17,7 @@
 
 package de.topobyte.androidremote;
 
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
@@ -107,7 +108,9 @@ public class Util
 
 	public static void sendKeyEvent(int key) throws IOException
 	{
-		String cmd = String.format(CMD_KEYEVENT, key);
+		int code = KeyEvent.getExtendedKeyCodeForChar('ä');
+		System.out.println(code);
+		String cmd = String.format(CMD_KEYEVENT, code);
 		System.out.println(cmd);
 		Runtime.getRuntime().exec(cmd);
 	}

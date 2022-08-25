@@ -18,11 +18,22 @@
 package de.topobyte.androidremote.viewer;
 
 import java.awt.BorderLayout;
+import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import com.android.ddmlib.AndroidDebugBridge;
@@ -96,6 +107,35 @@ public class Viewer
 		frame.setVisible(true);
 
 		screenshotPanel.addKeyListener(new DeviceKeyAdapter());
+		screenshotPanel.setFocusable(true);
+		screenshotPanel.requestFocus();
+
+		KeyStroke paste = KeyStroke.getKeyStroke("control V");
+		String ACTION_PASTE = "paste";
+		InputMap im = screenshotPanel
+				.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		im.put(paste, ACTION_PASTE);
+		ActionMap actionMap = screenshotPanel.getActionMap();
+		actionMap.put(ACTION_PASTE, new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					String data = (String) Toolkit.getDefaultToolkit()
+							.getSystemClipboard()
+							.getData(DataFlavor.stringFlavor);
+					Util.sendText(data);
+				} catch (HeadlessException | UnsupportedFlavorException
+						| IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+
+		});
+
 	}
 
 	public IDevice getDevice()
