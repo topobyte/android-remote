@@ -131,7 +131,7 @@ public class DevicePanel extends JPanel
 				PackageDialog packageDialog = new PackageDialog(
 						toolkit.getFrame(), DevicePanel.this.toolkit,
 						DevicePanel.this.device);
-				packageDialog.setSize(400, 300);
+				packageDialog.setSize(600, 300);
 				packageDialog.setVisible(true);
 			}
 		});

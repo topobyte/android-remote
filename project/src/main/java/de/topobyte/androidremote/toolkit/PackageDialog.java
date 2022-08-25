@@ -17,6 +17,9 @@
 
 package de.topobyte.androidremote.toolkit;
 
+import static de.topobyte.androidremote.toolkit.Toolkit.DeviceIdleWhitelistAction.DEVICE_IDLE_WHITELIST_ADD;
+import static de.topobyte.androidremote.toolkit.Toolkit.DeviceIdleWhitelistAction.DEVICE_IDLE_WHITELIST_REMOVE;
+
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -89,6 +92,10 @@ public class PackageDialog extends JDialog
 		JButton buttonUninstall = new JButton("uninstall");
 		JButton buttonForceClose = new JButton("force close");
 		JButton buttonClear = new JButton("clear data");
+		JButton buttonDiwAdd = new JButton("add to diw");
+		JButton buttonDiwRm = new JButton("rm from diw");
+		buttonDiwAdd.setToolTipText("Add to Device idle whitelist");
+		buttonDiwRm.setToolTipText("Remove from Device idle whitelist");
 
 		c.gridx = 0;
 		c.gridy = 0;
@@ -102,9 +109,15 @@ public class PackageDialog extends JDialog
 		c.gridx++;
 		main.add(buttonClear, c);
 
+		c.gridx++;
+		main.add(buttonDiwAdd, c);
+
+		c.gridx++;
+		main.add(buttonDiwRm, c);
+
 		c.gridx = 0;
 		c.gridy = 1;
-		c.gridwidth = 3;
+		c.gridwidth = 5;
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1.0;
 		main.add(inputFilter, c);
@@ -124,6 +137,14 @@ public class PackageDialog extends JDialog
 		buttonClear.addActionListener(e -> {
 			clearSelected();
 		});
+
+		buttonDiwAdd.addActionListener(e -> {
+			deviceIdleWhitelistAddSelected();
+		});
+
+		buttonDiwRm.addActionListener(e -> {
+			deviceIdleWhitelistRemoveSelected();
+		});
 	}
 
 	protected void uninstallSelected()
@@ -142,6 +163,18 @@ public class PackageDialog extends JDialog
 	{
 		List<App> apps = tableModel.getSelectedApps();
 		toolkit.clearOnDevice(device, apps);
+	}
+
+	private void deviceIdleWhitelistAddSelected()
+	{
+		List<App> apps = tableModel.getSelectedApps();
+		toolkit.diwWhitelist(device, apps, DEVICE_IDLE_WHITELIST_ADD);
+	}
+
+	private void deviceIdleWhitelistRemoveSelected()
+	{
+		List<App> apps = tableModel.getSelectedApps();
+		toolkit.diwWhitelist(device, apps, DEVICE_IDLE_WHITELIST_REMOVE);
 	}
 
 	private void updateList()

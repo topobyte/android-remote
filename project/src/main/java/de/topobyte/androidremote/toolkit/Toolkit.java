@@ -17,6 +17,9 @@
 
 package de.topobyte.androidremote.toolkit;
 
+import static de.topobyte.androidremote.toolkit.Toolkit.DeviceIdleWhitelistAction.DEVICE_IDLE_WHITELIST_ADD;
+import static de.topobyte.androidremote.toolkit.Toolkit.DeviceIdleWhitelistAction.DEVICE_IDLE_WHITELIST_REMOVE;
+
 import java.awt.Frame;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -225,6 +228,43 @@ public class Toolkit
 			message(device, output);
 		} catch (Exception e) {
 			message(device, "Error while force stopping: " + e.getMessage());
+		}
+	}
+
+	public enum DeviceIdleWhitelistAction {
+		DEVICE_IDLE_WHITELIST_ADD,
+		DEVICE_IDLE_WHITELIST_REMOVE
+	}
+
+	public void diwWhitelist(IDevice device, List<App> apps,
+			DeviceIdleWhitelistAction action)
+	{
+		for (App app : apps) {
+			diwWhitelist(device, app, action);
+		}
+	}
+
+	private void diwWhitelist(IDevice device, App app,
+			DeviceIdleWhitelistAction action)
+	{
+		String operator = null;
+		if (action == DEVICE_IDLE_WHITELIST_ADD) {
+			message(device,
+					"Adding to device idle whitelist: " + app.getPackageName());
+			operator = "+";
+		} else if (action == DEVICE_IDLE_WHITELIST_REMOVE) {
+			message(device, "Removing from device idle whitelist: "
+					+ app.getPackageName());
+			operator = "-";
+		}
+		try {
+			String cmd = "dumpsys deviceidle whitelist " + operator
+					+ app.getPackageName();
+			String output = Util.executeShellCommand(device, cmd);
+			message(device, output);
+		} catch (Exception e) {
+			message(device, "Error while changing device idle whitelist: "
+					+ e.getMessage());
 		}
 	}
 
