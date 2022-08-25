@@ -33,7 +33,9 @@ to its initial state. Run this to start the toolkit:
 
 Clicking the 'List packages' button opens a dialog that let's you perform
 actions on installed applications on the device in batches. Currently you
-can uninstall them or clear data to reset them to their initial state.
+can uninstall them, force stop them or clear data to reset them to their
+initial state. It's also possible to manage the device idle whitelisting
+here, i.e. you can add or remove apps from that whitelist.
 
 ![Toolkit package list](screenshots/package-list.png)
 
