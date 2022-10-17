@@ -32,6 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import com.android.ddmlib.IDevice;
+import com.android.sdklib.AndroidVersion;
+import com.google.common.base.Objects;
 
 import de.topobyte.system.utils.SystemPaths;
 
@@ -48,12 +50,14 @@ public class DevicePanel extends JPanel
 	private ScreenshotPanel screenshotPanel;
 
 	private String deviceName = null;
+	private AndroidVersion version = null;
 
 	public DevicePanel(Toolkit toolkit, IDevice device)
 	{
 		this.toolkit = toolkit;
 		this.device = device;
 		deviceName = device.getName();
+		version = device.getVersion();
 		setLayout(new GridBagLayout());
 
 		setBorder(BorderFactory.createCompoundBorder(
@@ -182,8 +186,11 @@ public class DevicePanel extends JPanel
 
 	public void update(IDevice device, int changeMask)
 	{
-		if (!device.getName().equals(deviceName)) {
+		boolean update = !Objects.equal(device.getName(), deviceName)
+				|| !Objects.equal(version, device.getVersion());
+		if (update) {
 			deviceName = device.getName();
+			version = device.getVersion();
 			updateTitle();
 			updateScreenshotPanel();
 		}
@@ -191,7 +198,12 @@ public class DevicePanel extends JPanel
 
 	private void updateTitle()
 	{
-		labelTitle.setText("Device: '" + device.getName() + "'");
+		int apiVersion = -1;
+		if (version != null) {
+			apiVersion = version.getApiLevel();
+		}
+		labelTitle.setText(String.format("Device: '%s' (API level %d)",
+				deviceName, apiVersion));
 	}
 
 	private void updateScreenshotPanel()
