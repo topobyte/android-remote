@@ -157,7 +157,7 @@ public class DevicePanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				Path path = SystemPaths.HOME.resolve(
-						"git/apks/unlock-city-maps/v3/UnlockCityMaps.apk");
+						"git/apks/unlock-city-maps/v5/UnlockCityMaps.apk");
 				DevicePanel.this.toolkit.uploadToDevice(DevicePanel.this.device,
 						path.toFile());
 			}
