@@ -30,6 +30,8 @@ import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener;
 import com.android.ddmlib.IDevice;
 
 import de.topobyte.androidremote.Util;
+import de.topobyte.shared.preferences.SharedPreferences;
+import de.topobyte.swing.util.SwingUtils;
 
 public class Viewer
 {
@@ -41,6 +43,8 @@ public class Viewer
 					"Unable to execute adb. Have you set up the path correctly?");
 			System.exit(1);
 		}
+
+		SwingUtils.setUiScale(SharedPreferences.getUIScale());
 
 		double scale = 0.3;
 		if (args.length > 0) {

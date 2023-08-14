@@ -19,8 +19,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.topobyte:swing-utils:0.0.12'
+    implementation 'de.topobyte:swing-utils:0.0.13'
     implementation 'de.topobyte:system-utils:0.0.1'
+    implementation 'de.topobyte:shared-preferences:0.0.1'
     implementation 'com.android.tools.ddms:ddmlib:26.6.2'
 }
 

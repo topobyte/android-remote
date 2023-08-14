@@ -40,6 +40,8 @@ import com.android.ddmlib.InstallException;
 
 import de.topobyte.androidremote.DeviceList;
 import de.topobyte.androidremote.Util;
+import de.topobyte.shared.preferences.SharedPreferences;
+import de.topobyte.swing.util.SwingUtils;
 import de.topobyte.system.utils.SystemPaths;
 
 public class Toolkit
@@ -52,6 +54,8 @@ public class Toolkit
 					"Unable to execute adb. Have you set up the path correctly?");
 			// System.exit(1);
 		}
+
+		SwingUtils.setUiScale(SharedPreferences.getUIScale());
 
 		new Toolkit();
 	}
